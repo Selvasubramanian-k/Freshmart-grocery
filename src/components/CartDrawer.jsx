@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import ghee from '../assets/ghee.jpg'
 import Brinjal from '../assets/Brinja.jpg'
 import liver from '../assets/liver.jpg'
@@ -39,6 +39,8 @@ const DELIVERY = 5.00
 
 function CartDrawer({ isOpen, onClose, onOpen, cart, increment, decrement, removeItem }) {
   const navigate = useNavigate()
+  const location = useLocation() 
+  const isCheckout = location.pathname === '/checkout'
   const getP     = (id) => PRODUCTS_MAP.find(p => p.id === Number(id))
 
   const entries  = Object.entries(cart).filter(([, q]) => q > 0)
@@ -102,16 +104,16 @@ function CartDrawer({ isOpen, onClose, onOpen, cart, increment, decrement, remov
 
       </aside>
 
-      {totalQty > 0 && !isOpen && (
-        <button className="cart-float" onClick={onOpen}>
-          <span className="cf-icon">🛍️</span>
-          <div>
-            <div className="cf-label">{totalQty} item{totalQty > 1 ? 's' : ''}</div>
-            <div className="cf-total">₹{subtotal}</div>
-          </div>
-          <span className="cf-arrow">›</span>
-        </button>
-      )}
+      {totalQty > 0 && !isOpen && !isCheckout && (             
+    <button className="cart-float" onClick={onOpen}>
+      <span className="cf-icon">🛍️</span>
+      <div>
+        <div className="cf-label">{totalQty} item{totalQty > 1 ? 's' : ''}</div>
+        <div className="cf-total">₹{subtotal}</div>
+      </div>
+      <span className="cf-arrow">›</span>
+    </button>
+  )}
     </>
   )
 }
