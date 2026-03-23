@@ -2,7 +2,10 @@
    GLOBAL RESET & VARIABLES
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
 :root {
   --primary:       #00a870;
   --primary-dark:  #008a5a;
@@ -179,7 +182,7 @@ body {
 .three-dots {
   display: none;
   background: none;
-  margin-left: 210px;
+  margin-left:auto;
   border: none;
   font-size: 24px;
   font-weight: 900;
@@ -819,10 +822,7 @@ body {
   .banner-section { grid-template-columns: 1fr 1fr; }
   .banner-section .banner-card:nth-child(3) { display: none; }
   .checkout-layout { grid-template-columns: 1fr; }
-  .cart-icon-btn{
-  left: 210px;
-  position: relative;
-  }
+ 
 }
 
 /* Mobile < 768px */
@@ -839,10 +839,7 @@ body {
   .cart-drawer { width: 100%; }
   .cart-float { left: 16px; right: 16px; bottom: 16px; min-width: unset; justify-content: center; border-radius: 10px; }
   .cart-float .cf-arrow { display: none; }
-  .cart-icon-btn{
-  left: 210px;
-  position: relative;
-  }
+  
 }
 
 /* Small mobile < 400px */
@@ -850,8 +847,5 @@ body {
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .product-name { font-size: 12px; }
   .price-new    { font-size: 15px; }
-  .cart-icon-btn{
-  left: 210px;
-  position: relative;
-  }
+  
 }
