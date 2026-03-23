@@ -9,9 +9,9 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch }) {
         <button className="hamburger" onClick={onMenuClick}>☰</button>
 
         <div className="navbar-logo">
-          <div className="navbar-logo-icon">🌿</div>
-          <span>FreshMart</span>
-        </div>
+  <svg width="36" height="36" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#00a870"/><path d="M13 16h14l-2 13H15L13 16z" fill="white"/><path d="M17 16v-3a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/><path d="M18 22c1-2 3-2 4 0" stroke="#00a870" strokeWidth="1.2" strokeLinecap="round"/></svg>
+  <span>FreshMart</span>
+</div>
 
         <button className="navbar-cat">🥦 Grocery ▾</button>
 

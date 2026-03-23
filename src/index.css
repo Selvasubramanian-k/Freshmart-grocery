@@ -19,7 +19,7 @@
   --sidebar-w:     230px;
 }
 body {
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -53,8 +53,8 @@ body {
 .navbar-logo-icon {
   width: 32px;
   height: 32px;
-  background: var(--primary);
-  border-radius: 8px;
+  background: none;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
