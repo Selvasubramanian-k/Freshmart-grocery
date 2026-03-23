@@ -85,7 +85,7 @@ function ProductList({ activeCat, cart, addToCart, increment, decrement, searchQ
           {CAT_LABELS[activeCat] || '🛒 All Products'}
           <span className="product-count">{filtered.length} items</span>
         </h2>
-        <span className="see-all">See All →</span>
+        
       </div>
 
       {/* Filter chips */}
