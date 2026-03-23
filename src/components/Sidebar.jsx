@@ -19,6 +19,10 @@ function Sidebar({ activeCat, onSelect, isOpen, onClose }) {
         onClick={onClose}
       />
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+          <div className="right-drawer-header">
+              <span>Categories</span>
+              <button onClick={onClose}>✕</button>
+          </div>
         {CATEGORIES.map((cat) => (  
           <button
             key={cat.id}
