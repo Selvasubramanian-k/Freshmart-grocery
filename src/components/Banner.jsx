@@ -1,4 +1,4 @@
-import Egg from '../assets/Eggs.jpg'
+import Egg from '../assets/eggs.jpg'
 import cool from '../assets/soft-drinks.jpg'
 import fruits from '../assets/fruits.jpg'
 import { useState, useEffect } from 'react'
