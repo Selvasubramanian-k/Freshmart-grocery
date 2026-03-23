@@ -864,3 +864,147 @@ body {
   .checkout-title { font-size: 20px; }
 }
 
+/* SHOPS PAGE */
+.page-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+.page-back {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.page-back:hover { opacity: .7; }
+
+.page-title {
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  color: var(--text);
+}
+
+/* ── SHOPS GRID ──────────────── */
+.shops-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.shop-card {
+  background: linear-gradient(to left, #e6f7f1, var(--white));
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  transition: border-color .15s, transform .15s;
+}
+.shop-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+.shop-card-name   { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+.shop-card-info   { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.shop-card-rating { font-size: 13px; font-weight: 700; color: var(--primary); margin-top: 8px; }
+
+/* ── OFFERS GRID ──────────────────────────────────────────────── */
+.offers-grid-page {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.offer-card-page {
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.offer-card-page:hover { transform: scale(1.02); }
+
+.offer-page-title { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+.offer-page-sub   { font-size: 12px; color: rgba(255,255,255,.85); margin-bottom: 10px; }
+.offer-page-btn {
+  background: rgba(255,255,255,.25);
+  border: 1px solid rgba(255,255,255,.5);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.offer-page-emoji { font-size: 42px; opacity: .9; }
+
+/* ── CONTACT PAGE ─────────────────────────────────────────────── */
+.contact-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.contact-info:last-of-type { border-bottom: none; }
+.contact-info span { font-size: 18px; }
+
+.contact-textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  height: 100px;
+  outline: none;
+  resize: none;
+  margin-top: 16px;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color .2s;
+}
+.contact-textarea:focus { border-color: var(--primary); background: var(--white); }
+
+.btn-send {
+  width: 100%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background .2s;
+}
+.btn-send:hover { background: var(--primary-dark); }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .shops-grid      { grid-template-columns: 1fr; }
+  .offers-grid-page { grid-template-columns: 1fr; }
+  .page-wrapper    { padding: 20px 14px 60px; }
+  .page-title      { font-size: 22px; }
+}

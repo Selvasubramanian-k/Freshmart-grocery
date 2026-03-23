@@ -6,6 +6,9 @@ import CartDrawer  from './components/CartDrawer.jsx'
 import Home        from './pages/Home.jsx'
 import Checkout    from './pages/Checkout.jsx'
 import Success     from './pages/Success.jsx'
+import Shops   from './pages/Shops.jsx'
+import Offers  from './pages/Offers.jsx'
+import Contact from './pages/Contact.jsx'
 
 export default function App() {
   const [cart, setCart]           = useState({})
@@ -58,6 +61,9 @@ export default function App() {
           <Checkout cart={cart} onPlaceOrder={clearCart} />
         }/>
         <Route path="/success" element={<Success />} />
+        <Route path="/shops"   element={<Shops />} />
+        <Route path="/offers"  element={<Offers />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
 
       <CartDrawer
