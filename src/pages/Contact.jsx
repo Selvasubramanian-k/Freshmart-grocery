@@ -13,6 +13,8 @@ export default function Contact() {
         <textarea className="contact-textarea" placeholder="Write your message..." />
         <button className="btn-send">Send Message</button>
       </div>
+      
     </div>
+
   )
 }
