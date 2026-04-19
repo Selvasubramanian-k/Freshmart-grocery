@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Navbar      from './components/Navbar.jsx'
 import Sidebar     from './components/Sidebar.jsx'
 import CartDrawer  from './components/CartDrawer.jsx'
 import Home        from './pages/Home.jsx'
 import Checkout    from './pages/Checkout.jsx'
 import Success     from './pages/Success.jsx'
-import Shops   from './pages/Shops.jsx'
-import Offers  from './pages/Offers.jsx'
-import Contact from './pages/Contact.jsx'
+import Shops       from './pages/Shops.jsx'
+import Offers      from './pages/Offers.jsx'
+import Contact     from './pages/Contact.jsx'
+import Login       from './pages/Login.jsx'
 
 export default function App() {
   const [cart, setCart]           = useState({})
@@ -16,6 +17,15 @@ export default function App() {
   const [sidebarOpen, setSidebar] = useState(false)
   const [activeCat, setActiveCat] = useState('all')
   const [searchQuery, setSearch]  = useState('')
+  const [user, setUser]           = useState(null)
+
+  const location    = useLocation()
+  const navigate    = useNavigate()
+  const isLoginPage = location.pathname === '/login'
+
+  useEffect(() => {
+    navigate('/login')
+  }, [])
 
   const addToCart  = (p)  => setCart(c => ({ ...c, [p.id]: (c[p.id] || 0) + 1 }))
   const increment  = (id) => setCart(c => ({ ...c, [id]: (c[id] || 0) + 1 }))
@@ -29,17 +39,27 @@ export default function App() {
 
   const cartProps = { cart, addToCart, increment, decrement, removeItem }
 
+  const handleLogin = (userData) => {
+    setUser(userData)
+    navigate('/')
+  }
+
   return (
     <div className="app">
 
-      <Navbar
-        onMenuClick={() => setSidebar(true)}
-        onCartClick={() => setDrawer(true)}
-        cartCount={Object.values(cart).reduce((s, q) => s + q, 0)}
-        onSearch={setSearch}
-      />
+      {!isLoginPage && (
+        <Navbar
+          onMenuClick={() => setSidebar(true)}
+          onCartClick={() => setDrawer(true)}
+          cartCount={Object.values(cart).reduce((s, q) => s + q, 0)}
+          onSearch={setSearch}
+          user={user}
+        />
+      )}
 
       <Routes>
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+
         <Route path="/" element={
           <div className="layout">
             <Sidebar
@@ -57,21 +77,21 @@ export default function App() {
             </main>
           </div>
         }/>
-        <Route path="/checkout" element={
-          <Checkout cart={cart} onPlaceOrder={clearCart} />
-        }/>
-        <Route path="/success" element={<Success />} />
-        <Route path="/shops"   element={<Shops />} />
-        <Route path="/offers"  element={<Offers />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/checkout" element={<Checkout cart={cart} onPlaceOrder={clearCart} />}/>
+        <Route path="/success"  element={<Success />} />
+        <Route path="/shops"    element={<Shops />} />
+        <Route path="/offers"   element={<Offers />} />
+        <Route path="/contact"  element={<Contact />} />
       </Routes>
 
-      <CartDrawer
-        isOpen={drawerOpen}
-        onClose={() => setDrawer(false)}
-        onOpen={() => setDrawer(true)}
-        {...cartProps}
-      />
+      {!isLoginPage && (
+        <CartDrawer
+          isOpen={drawerOpen}
+          onClose={() => setDrawer(false)}
+          onOpen={() => setDrawer(true)}
+          {...cartProps}
+        />
+      )}
 
     </div>
   )

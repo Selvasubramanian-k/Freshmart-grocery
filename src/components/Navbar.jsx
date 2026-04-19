@@ -1,13 +1,25 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Navbar({ onMenuClick, onCartClick, cartCount, onSearch }) {
+function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
   const [rightOpen, setRightOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
   const navigate = useNavigate()
 
   const goTo = (path) => {
     setRightOpen(false)
     navigate(path)
+  }
+
+  const handleLogout = () => {
+    setAccountOpen(false)
+    navigate('/login')
+  }
+
+  // Get initials from name
+  const getInitials = (name) => {
+    if (!name) return '👤'
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
   }
 
   return (
@@ -31,8 +43,36 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch }) {
           <a className="nav-link" onClick={() => goTo('/shops')}>Shops</a>
           <a className="nav-link" onClick={() => goTo('/offers')}>Offers</a>
           <a className="nav-link" onClick={() => goTo('/contact')}>Contact</a>
-          <button className="btn-join" onClick={() => goTo('/join')}>Join</button>
           <button className="btn-seller" onClick={() => goTo('/seller')}>Become a Seller</button>
+
+          {/* Account Circle */}
+          <div className="account-wrapper">
+            <button className="account-circle" onClick={() => setAccountOpen(o => !o)}>
+              {getInitials(user?.name)}
+            </button>
+
+            {/* Account Dropdown Drawer */}
+            {accountOpen && (
+              <>
+                <div className="account-backdrop" onClick={() => setAccountOpen(false)} />
+                <div className="account-drawer">
+                  <div className="account-drawer-top">
+                    <div className="account-drawer-circle">
+                      {getInitials(user?.name)}
+                    </div>
+                    <div className="account-drawer-info">
+                      <p className="account-drawer-name">{user?.name || 'Guest User'}</p>
+                      <p className="account-drawer-email">{user?.email || 'guest@freshmart.com'}</p>
+                    </div>
+                  </div>
+                  <div className="account-drawer-divider" />
+                  <button className="account-drawer-logout" onClick={handleLogout}>
+                    🚪 Logout
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         <button className="cart-icon-btn" onClick={onCartClick}>
@@ -60,9 +100,18 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch }) {
         <a className="right-nav-link" onClick={() => goTo('/offers')}>🎁 Offers</a>
         <a className="right-nav-link" onClick={() => goTo('/contact')}>📞 Contact</a>
 
+        {/* Account in mobile drawer */}
+        <div className="right-drawer-account">
+          <div className="account-circle-sm">{getInitials(user?.name)}</div>
+          <div>
+            <p className="right-account-name">{user?.name || 'Guest User'}</p>
+            <p className="right-account-email">{user?.email || 'guest@freshmart.com'}</p>
+          </div>
+        </div>
+
         <div className="right-drawer-btns">
-          <button className="btn-join" onClick={() => goTo('/join')}>Join</button>
           <button className="btn-seller" onClick={() => goTo('/seller')}>Become a Seller</button>
+          <button className="btn-logout" onClick={handleLogout}>🚪 Logout</button>
         </div>
       </div>
     </>
