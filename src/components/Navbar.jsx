@@ -27,11 +27,10 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
       <header className="navbar">
         <button className="hamburger" onClick={onMenuClick}>☰</button>
 
-        <div className="navbar-logo">
-          <svg width="36" height="36" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#00a870"/><path d="M13 16h14l-2 13H15L13 16z" fill="white"/><path d="M17 16v-3a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/><path d="M18 22c1-2 3-2 4 0" stroke="#00a870" strokeWidth="1.2" strokeLinecap="round"/></svg>
-          <span>FreshMart</span>
-        </div>
-
+       <div className="navbar-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+  <svg width="36" height="36" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#00a870"/><path d="M13 16h14l-2 13H15L13 16z" fill="white"/><path d="M17 16v-3a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/><path d="M18 22c1-2 3-2 4 0" stroke="#00a870" strokeWidth="1.2" strokeLinecap="round"/></svg>
+  <span>FreshMart</span>
+</div>
         <button className="navbar-cat">🥦 Grocery ▾</button>
 
         <div className="navbar-search">
@@ -43,7 +42,7 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
           <a className="nav-link" onClick={() => goTo('/shops')}>Shops</a>
           <a className="nav-link" onClick={() => goTo('/offers')}>Offers</a>
           <a className="nav-link" onClick={() => goTo('/contact')}>Contact</a>
-          <button className="btn-seller" onClick={() => goTo('/seller')}>Become a Seller</button>
+          
 
           {/* Account Circle */}
           <div className="account-wrapper">

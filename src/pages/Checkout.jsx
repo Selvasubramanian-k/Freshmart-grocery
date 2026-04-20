@@ -7,7 +7,10 @@ export default function Checkout({ cart, onPlaceOrder }) {
     <CheckoutPage
       cart={cart}
       onBack={() => navigate('/')}
-      onPlaceOrder={() => { onPlaceOrder(); navigate('/success') }}
+      onPlaceOrder={(orderedItems) => {
+        onPlaceOrder()
+        navigate('/success', { state: { orderedItems } })
+      }}
     />
   )
 }

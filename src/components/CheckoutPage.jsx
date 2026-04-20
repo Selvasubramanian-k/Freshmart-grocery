@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import ghee from '../assets/ghee.jpg'
+import ghee    from '../assets/ghee.jpg'
 import Brinjal from '../assets/Brinja.jpg'
-import liver from '../assets/liver.jpg'
-import banana from '../assets/banana.jpg'
+import liver   from '../assets/liver.jpg'
+import banana  from '../assets/banana.jpg'
 
 const PRODUCTS_MAP = [
   { id:1,  name:'Red Apples',       unit:'1 kg',    price:120, img:'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=300&q=80' },
@@ -38,29 +38,29 @@ const PRODUCTS_MAP = [
 const DELIVERY = 5.00
 
 const PAYMENT_TYPES = [
-  { id: 'card', label: 'Credit / Debit Card', icon: '💳' },
-  { id: 'upi',  label: 'UPI',                 icon: '📱' },
-  { id: 'nb',   label: 'Net Banking',          icon: '🏦' },
-  { id: 'cod',  label: 'Cash on Delivery',     icon: '💵' },
+  { id:'card', label:'Credit / Debit Card', icon:'💳' },
+  { id:'upi',  label:'UPI',                 icon:'📱' },
+  { id:'nb',   label:'Net Banking',          icon:'🏦' },
+  { id:'cod',  label:'Cash on Delivery',     icon:'💵' },
 ]
 
 const UPI_APPS = [
-  { id: 'gpay',    label: 'GPay',    color: '#4285F4' },
-  { id: 'phonepe', label: 'PhonePe', color: '#5f259f' },
-  { id: 'paytm',   label: 'Paytm',   color: '#00BAF2' },
-  { id: 'bhim',    label: 'BHIM',    color: '#138808' },
+  { id:'gpay',    label:'GPay',    color:'#4285F4' },
+  { id:'phonepe', label:'PhonePe', color:'#5f259f' },
+  { id:'paytm',   label:'Paytm',   color:'#00BAF2' },
+  { id:'bhim',    label:'BHIM',    color:'#138808' },
 ]
 
 const BANKS = [
-  'State Bank of India', 'HDFC Bank', 'ICICI Bank',
-  'Axis Bank', 'Kotak Bank', 'Punjab National Bank',
+  'State Bank of India','HDFC Bank','ICICI Bank',
+  'Axis Bank','Kotak Bank','Punjab National Bank',
 ]
 
 function CheckoutPage({ cart, onBack, onPlaceOrder }) {
   const [payType, setPayType] = useState('card')
-  const [upiApp, setUpiApp]   = useState('')
-  const [upiId, setUpiId]     = useState('')
-  const [bank, setBank]       = useState('')
+  const [upiApp,  setUpiApp]  = useState('')
+  const [upiId,   setUpiId]   = useState('')
+  const [bank,    setBank]    = useState('')
 
   const entries  = Object.entries(cart).filter(([, q]) => q > 0)
   const subtotal = entries.reduce((s, [id, q]) => s + (PRODUCTS_MAP.find(p => p.id === Number(id))?.price || 0) * q, 0)
@@ -98,7 +98,7 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
         </div>
 
         {/* RIGHT — Forms */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
 
           {/* Delivery Info */}
           <div className="co-card">
@@ -135,7 +135,6 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
           <div className="co-card">
             <h3 className="co-card-title">💳 Payment Details</h3>
 
-            {/* Payment Type Tabs */}
             <div className="pay-type-tabs">
               {PAYMENT_TYPES.map(pt => (
                 <button
@@ -151,7 +150,7 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
 
             {/* Card */}
             {payType === 'card' && (
-              <div className="form-grid" style={{ marginTop: 16 }}>
+              <div className="form-grid" style={{ marginTop:16 }}>
                 <div className="form-group full">
                   <label className="form-label">Card Number</label>
                   <input className="form-input" type="text" placeholder="4242 4242 4242 4242" maxLength={19} />
@@ -176,8 +175,8 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
 
             {/* UPI */}
             {payType === 'upi' && (
-              <div style={{ marginTop: 16 }}>
-                <p className="form-label" style={{ marginBottom: 10 }}>Select UPI App</p>
+              <div style={{ marginTop:16 }}>
+                <p className="form-label" style={{ marginBottom:10 }}>Select UPI App</p>
                 <div className="upi-apps-grid">
                   {UPI_APPS.map(app => (
                     <button
@@ -190,7 +189,7 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
                     </button>
                   ))}
                 </div>
-                <div style={{ marginTop: 16 }}>
+                <div style={{ marginTop:16 }}>
                   <label className="form-label">Or enter UPI ID</label>
                   <input
                     className="form-input"
@@ -198,10 +197,10 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
                     placeholder="yourname@upi"
                     value={upiId}
                     onChange={e => setUpiId(e.target.value)}
-                    style={{ marginTop: 6 }}
+                    style={{ marginTop:6 }}
                   />
                 </div>
-                <div className="card-secure-note" style={{ marginTop: 12 }}>
+                <div className="card-secure-note" style={{ marginTop:12 }}>
                   📱 You will receive a payment request on your UPI app
                 </div>
               </div>
@@ -209,7 +208,7 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
 
             {/* Net Banking */}
             {payType === 'nb' && (
-              <div style={{ marginTop: 16 }}>
+              <div style={{ marginTop:16 }}>
                 <label className="form-label">Select Your Bank</label>
                 <div className="nb-banks-grid">
                   {BANKS.map(b => (
@@ -222,13 +221,13 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
                     </button>
                   ))}
                 </div>
-                <div className="card-secure-note" style={{ marginTop: 12 }}>
+                <div className="card-secure-note" style={{ marginTop:12 }}>
                   🔒 You will be redirected to your bank's secure page
                 </div>
               </div>
             )}
 
-            {/* Cash on Delivery */}
+            {/* COD */}
             {payType === 'cod' && (
               <div className="cod-box">
                 <div className="cod-icon">💵</div>
@@ -237,10 +236,9 @@ function CheckoutPage({ cart, onBack, onPlaceOrder }) {
                 <div className="cod-note">⚠️ Please keep exact change ready</div>
               </div>
             )}
-
           </div>
 
-          <button className="btn-place-order" onClick={onPlaceOrder}>
+          <button className="btn-place-order" onClick={() => onPlaceOrder(entries)}>
             🎉 Place Order — ₹{total.toFixed(2)}
           </button>
 
