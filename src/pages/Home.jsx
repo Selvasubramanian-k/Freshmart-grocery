@@ -66,7 +66,7 @@ export default function Home({ activeCat, searchQuery, orders = [], user, ...car
             {...cartProps}
           />
           <Recommendations
-            title={`${slotMeta.emoji} ${slotMeta.greeting}${name ? ' ' + name : ''}!`}
+            title={`${slotMeta.emoji} ${slotMeta.greeting}${name ? ' ' + name : ''}!!!`}
             subtitle={['Picked for this time of day', weatherText].filter(Boolean).join(' · ')}
             items={context}
             {...cartProps}
