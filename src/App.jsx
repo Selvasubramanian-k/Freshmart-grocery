@@ -91,7 +91,7 @@ export default function App() {
         <Route path="/checkout" element={<Checkout cart={cart} onPlaceOrder={handlePlaceOrder} />}/>
         <Route path="/success"  element={<Success />} />
         <Route path="/shops"    element={<Shops />} />
-        <Route path="/offers"   element={<Offers />} />
+        <Route path="/offers"   element={<Offers {...cartProps} onBrowse={setActiveCat} />} />
         <Route path="/contact"  element={<Contact />} />
       </Routes>
 
