@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 // ─────────────────────────────────────────────────────────────
 //  Tagline maathanum na inga mattum maathunga
 // ─────────────────────────────────────────────────────────────
-const TAGLINE = 'Farm fresh, every single day'
+const TAGLINE = 'Your kitchen, always stocked'
 const SUBLINE = 'Fruits, vegetables, dairy and daily essentials, delivered to your door.'
 
 // Backend illa, so OTP demo mode. Real SMS venumna Firebase Auth / MSG91 use pannalam.
