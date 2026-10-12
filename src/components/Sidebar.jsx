@@ -7,6 +7,8 @@ const CATEGORIES = [
   { id: 'meat',      label: 'Meat & Fish',         icon: '🐟' },
   { id: 'snacks',    label: 'Snacks',              icon: '🍿' },
   { id: 'beverage',  label: 'Beverage',            icon: '🍵' },
+  { id: 'breakfast', label: 'Breakfast',           icon: '🥞' },
+  { id: 'cooking',   label: 'Cooking',             icon: '🧂' },
   { id: 'home',      label: 'Home & Cleaning',     icon: '🧹' },
   { id: 'petcare',   label: 'Pet Care',            icon: '🐾' },
 ]

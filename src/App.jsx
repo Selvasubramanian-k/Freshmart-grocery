@@ -10,6 +10,7 @@ import Shops       from './pages/Shops.jsx'
 import Offers      from './pages/Offers.jsx'
 import Contact     from './pages/Contact.jsx'
 import Login       from './pages/Login.jsx'
+import { loadOrders, saveOrder } from './utils/orderHistory.js'
 
 export default function App() {
   const [cart, setCart]           = useState({})
@@ -18,6 +19,7 @@ export default function App() {
   const [activeCat, setActiveCat] = useState('all')
   const [searchQuery, setSearch]  = useState('')
   const [user, setUser]           = useState(null)
+  const [orders, setOrders]       = useState([])   // previous orders (localStorage)
 
   const location    = useLocation()
   const navigate    = useNavigate()
@@ -37,10 +39,17 @@ export default function App() {
   const removeItem = (id) => setCart(c => { const n = { ...c }; delete n[id]; return n })
   const clearCart  = ()   => setCart({})
 
+  // Order place aanaa -> cart clear + order history save (recommendation ku use aagum)
+  const handlePlaceOrder = (orderedItems) => {
+    setOrders(saveOrder(user?.email, orderedItems))
+    clearCart()
+  }
+
   const cartProps = { cart, addToCart, increment, decrement, removeItem }
 
   const handleLogin = (userData) => {
     setUser(userData)
+    setOrders(loadOrders(userData.email))
     navigate('/')
   }
 
@@ -72,12 +81,14 @@ export default function App() {
               <Home
                 activeCat={activeCat}
                 searchQuery={searchQuery}
+                orders={orders}
+                user={user}
                 {...cartProps}
               />
             </main>
           </div>
         }/>
-        <Route path="/checkout" element={<Checkout cart={cart} onPlaceOrder={clearCart} />}/>
+        <Route path="/checkout" element={<Checkout cart={cart} onPlaceOrder={handlePlaceOrder} />}/>
         <Route path="/success"  element={<Success />} />
         <Route path="/shops"    element={<Shops />} />
         <Route path="/offers"   element={<Offers />} />
@@ -89,6 +100,7 @@ export default function App() {
           isOpen={drawerOpen}
           onClose={() => setDrawer(false)}
           onOpen={() => setDrawer(true)}
+          orders={orders}
           {...cartProps}
         />
       )}

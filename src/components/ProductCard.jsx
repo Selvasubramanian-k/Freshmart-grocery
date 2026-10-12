@@ -1,21 +1,19 @@
-function ProductCard({product,qty,onAdd,onInc,onDec}) {
+import ProductImage from './ProductImage.jsx'
+
+function ProductCard({product,qty,onAdd,onInc,onDec,reason}) {
   return (
     <div className='product-card'>
          {product.discount && (
         <span className="product-badge">{product.discount}%</span>
       )}
       <div className="product-img-wrap">
-        <img
-          className="product-img"
-          src={product.img}
-          alt={product.name}
-          loading="lazy"
-        />
+        <ProductImage className="product-img" product={product} />
       </div>
       
       <div className="product-body">
         <h3 className="product-name">{product.name}</h3>
         <p className="product-unit">{product.unit}</p>
+        {reason && <p className="product-reason">{reason}</p>}
 
         <div className="product-footer">
           <div className="price-block">

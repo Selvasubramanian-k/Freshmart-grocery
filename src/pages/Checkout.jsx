@@ -8,7 +8,7 @@ export default function Checkout({ cart, onPlaceOrder }) {
       cart={cart}
       onBack={() => navigate('/')}
       onPlaceOrder={(orderedItems) => {
-        onPlaceOrder()
+        onPlaceOrder(orderedItems)
         navigate('/success', { state: { orderedItems } })
       }}
     />
