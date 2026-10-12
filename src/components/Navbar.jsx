@@ -61,7 +61,7 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
                     </div>
                     <div className="account-drawer-info">
                       <p className="account-drawer-name">{user?.name || 'Guest User'}</p>
-                      <p className="account-drawer-email">{user?.email || 'guest@freshmart.com'}</p>
+                      <p className="account-drawer-email">{user?.email || user?.phone || 'guest@freshmart.com'}</p>
                     </div>
                   </div>
                   <div className="account-drawer-divider" />
@@ -104,7 +104,7 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
           <div className="account-circle-sm">{getInitials(user?.name)}</div>
           <div>
             <p className="right-account-name">{user?.name || 'Guest User'}</p>
-            <p className="right-account-email">{user?.email || 'guest@freshmart.com'}</p>
+            <p className="right-account-email">{user?.email || user?.phone || 'guest@freshmart.com'}</p>
           </div>
         </div>
 

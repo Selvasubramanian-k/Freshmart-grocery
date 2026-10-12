@@ -41,7 +41,7 @@ export default function App() {
 
   // Order place aanaa -> cart clear + order history save (recommendation ku use aagum)
   const handlePlaceOrder = (orderedItems) => {
-    setOrders(saveOrder(user?.email, orderedItems))
+    setOrders(saveOrder(user?.email || user?.phone, orderedItems))
     clearCart()
   }
 
@@ -49,7 +49,7 @@ export default function App() {
 
   const handleLogin = (userData) => {
     setUser(userData)
-    setOrders(loadOrders(userData.email))
+    setOrders(loadOrders(userData.email || userData.phone))
     navigate('/')
   }
 
