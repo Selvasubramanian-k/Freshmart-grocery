@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Navbar      from './components/Navbar.jsx'
-import Sidebar     from './components/Sidebar.jsx'
 import CartDrawer  from './components/CartDrawer.jsx'
 import Home        from './pages/Home.jsx'
 import Checkout    from './pages/Checkout.jsx'
@@ -16,7 +15,6 @@ import { loadOrders, saveOrder } from './utils/orderHistory.js'
 export default function App() {
   const [cart, setCart]           = useState({})
   const [drawerOpen, setDrawer]   = useState(false)
-  const [sidebarOpen, setSidebar] = useState(false)
   const [activeCat, setActiveCat] = useState('all')
   const [searchQuery, setSearch]  = useState('')
   const [user, setUser]           = useState(null)
@@ -66,7 +64,8 @@ export default function App() {
 
       {!isLoginPage && (
         <Navbar
-          onMenuClick={() => setSidebar(true)}
+          activeCat={activeCat}
+          onCategory={setActiveCat}
           onCartClick={() => setDrawer(true)}
           cartCount={Object.values(cart).reduce((s, q) => s + q, 0)}
           onSearch={setSearch}
@@ -80,12 +79,6 @@ export default function App() {
 
         <Route path="/" element={
           <div className="layout">
-            <Sidebar
-              activeCat={activeCat}
-              onSelect={(id) => { setActiveCat(id); setSidebar(false) }}
-              isOpen={sidebarOpen}
-              onClose={() => setSidebar(false)}
-            />
             <main className="main-content">
               <Home
                 activeCat={activeCat}

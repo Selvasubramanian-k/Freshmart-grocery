@@ -1,9 +1,45 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { CATEGORIES } from '../data/categories.js'
 
-function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user, onLogout }) {
+// ─────────────────────────────────────────────────────────────
+//  Maathanum na inga mattum maathunga
+// ─────────────────────────────────────────────────────────────
+const DELIVERY_ETA = '10 minutes'
+const SEARCH_HINTS = ['milk', 'tea powder', 'tomato', 'dish wash liquid', 'ice cream', 'bread', 'eggs', 'sugar']
+
+const ADDRESS_KEY    = 'freshmart_address'
+const ADDRESS_LABELS = ['Home', 'Work', 'Other']
+
+function readAddress() {
+  try {
+    const a = JSON.parse(localStorage.getItem(ADDRESS_KEY))
+    if (a && ADDRESS_LABELS.includes(a.label)) return { label: a.label, text: String(a.text || '') }
+  } catch { /* storage blocked / bad json */ }
+  return { label: 'Home', text: '' }
+}
+
+function writeAddress(a) {
+  try { localStorage.setItem(ADDRESS_KEY, JSON.stringify(a)) } catch { /* ignore */ }
+}
+
+function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, onCategory }) {
   const [rightOpen, setRightOpen] = useState(false)
+  const [query, setQuery]         = useState('')
+  const [hintIdx, setHintIdx]     = useState(0)
+  const [addrOpen, setAddrOpen]   = useState(false)
+  const [address, setAddress]     = useState(readAddress)
+  const [draft, setDraft]         = useState(address)
+
   const navigate = useNavigate()
+  const location = useLocation()
+  const isHome   = location.pathname === '/'
+
+  // Search box la text thaanaave maaruthu (Zepto maathiri)
+  useEffect(() => {
+    const t = setInterval(() => setHintIdx((i) => (i + 1) % SEARCH_HINTS.length), 2600)
+    return () => clearInterval(t)
+  }, [])
 
   const goTo = (path) => {
     setRightOpen(false)
@@ -15,6 +51,22 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user, onLogout 
     onLogout()
   }
 
+  const handleSearch = (value) => {
+    setQuery(value)
+    onSearch(value)
+    if (!isHome) navigate('/')          // vera page la type panna Home ku povom
+  }
+
+  const openAddress = () => { setDraft(address); setAddrOpen(true) }
+  const closeAddress = () => setAddrOpen(false)
+  const saveAddress = (e) => {
+    e.preventDefault()
+    const next = { label: draft.label, text: draft.text.trim() }
+    setAddress(next)
+    writeAddress(next)
+    setAddrOpen(false)
+  }
+
   // Get initials from name
   const getInitials = (name) => {
     if (!name) return '👤'
@@ -23,40 +75,121 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user, onLogout 
 
   return (
     <>
-      <header className="navbar">
-        <button className="hamburger" onClick={onMenuClick}>☰</button>
+      <header className="zn-header">
+        <div className="zn-top">
 
-       <div className="navbar-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-  <svg width="36" height="36" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#00a870"/><path d="M13 16h14l-2 13H15L13 16z" fill="white"/><path d="M17 16v-3a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/><path d="M18 22c1-2 3-2 4 0" stroke="#00a870" strokeWidth="1.2" strokeLinecap="round"/></svg>
-  <span>FreshMart</span>
-</div>
-        <button className="navbar-cat">🥦 Grocery ▾</button>
+          <button type="button" className="zn-logo" aria-label="FreshMart home" onClick={() => navigate('/')}>
+            <svg width="38" height="38" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#00a870"/><path d="M13 16h14l-2 13H15L13 16z" fill="white"/><path d="M17 16v-3a3 3 0 0 1 6 0v3" stroke="white" strokeWidth="2" strokeLinecap="round" fill="none"/></svg>
+            <span>FreshMart</span>
+          </button>
 
-        <div className="navbar-search">
-          <span>🔍</span>
-          <input type="text" placeholder="Search for groceries..." onChange={(e) => onSearch(e.target.value)} />
-        </div>
+          {/* Delivery caption + address */}
+          <div className="zn-deliver">
+            <button
+              type="button"
+              className="zn-deliver-btn"
+              aria-haspopup="dialog"
+              aria-expanded={addrOpen}
+              onClick={openAddress}
+            >
+              <span className="zn-eta">⚡ {DELIVERY_ETA}</span>
+              <span className="zn-addr">
+                <span className="zn-addr-text">{address.label} · {address.text || 'Add address'}</span>
+                <span className="zn-caret" aria-hidden="true">▾</span>
+              </span>
+            </button>
 
-        <div className="navbar-links">
-          <a className="nav-link" onClick={() => goTo('/shops')}>Shops</a>
-          <a className="nav-link" onClick={() => goTo('/offers')}>Offers</a>
-          <a className="nav-link" onClick={() => goTo('/contact')}>Contact</a>
-          
+            {addrOpen && (
+              <>
+                <div className="zn-pop-backdrop" onClick={closeAddress} />
+                <form
+                  className="zn-pop"
+                  role="dialog"
+                  aria-label="Delivery address"
+                  onSubmit={saveAddress}
+                  onKeyDown={(e) => { if (e.key === 'Escape') closeAddress() }}
+                >
+                  <div className="zn-pop-head">
+                    <span>Delivery location</span>
+                    <button type="button" className="zn-pop-close" aria-label="Close" onClick={closeAddress}>✕</button>
+                  </div>
 
-          {/* Account icon -> /account page */}
-          <div className="account-wrapper">
-            <button className="account-circle" aria-label="My account" onClick={() => navigate('/account')}>
+                  <div className="zn-chips" role="group" aria-label="Address type">
+                    {ADDRESS_LABELS.map((l) => (
+                      <button
+                        key={l}
+                        type="button"
+                        className={`zn-chip ${draft.label === l ? 'active' : ''}`}
+                        aria-pressed={draft.label === l}
+                        onClick={() => setDraft((d) => ({ ...d, label: l }))}
+                      >
+                        {l}
+                      </button>
+                    ))}
+                  </div>
+
+                  <input
+                    className="zn-pop-input"
+                    type="text"
+                    aria-label="Address"
+                    placeholder="House no, street, area"
+                    value={draft.text}
+                    onChange={(e) => setDraft((d) => ({ ...d, text: e.target.value }))}
+                    autoFocus
+                  />
+                  <button type="submit" className="zn-pop-save" disabled={!draft.text.trim()}>Save address</button>
+                </form>
+              </>
+            )}
+          </div>
+
+          {/* Search with rotating hint */}
+          <div className="zn-search">
+            <span className="zn-search-icon" aria-hidden="true">🔍</span>
+            <div className="zn-search-field">
+              <input
+                type="text"
+                aria-label="Search products"
+                value={query}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+              {query === '' && (
+                <span className="zn-ph" aria-hidden="true">
+                  Search for "<b key={hintIdx} className="zn-ph-word">{SEARCH_HINTS[hintIdx]}</b>"
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="zn-actions">
+            <button type="button" className="zn-account" aria-label="My account" onClick={() => navigate('/account')}>
               {getInitials(user?.name)}
             </button>
+            <button type="button" className="zn-cart" aria-label={`Cart, ${cartCount} items`} onClick={onCartClick}>
+              🛒
+              {cartCount > 0 && <span className="zn-cart-badge">{cartCount}</span>}
+            </button>
+            <button type="button" className="zn-menu" aria-label="Menu" onClick={() => setRightOpen(true)}>⋮</button>
           </div>
         </div>
 
-        <button className="cart-icon-btn" onClick={onCartClick}>
-          🛒
-          {cartCount > 0 && <span className="cart-count-badge">{cartCount}</span>}
-        </button>
-
-        <button className="three-dots" onClick={() => setRightOpen(true)}>⋮</button>
+        {/* Category icon strip (Home page la mattum) */}
+        {isHome && (
+          <nav className="zn-strip" aria-label="Categories">
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                className={`zn-cat ${activeCat === c.id ? 'active' : ''}`}
+                aria-current={activeCat === c.id ? 'true' : undefined}
+                onClick={() => onCategory(c.id)}
+              >
+                <span className="zn-cat-icon" aria-hidden="true">{c.icon}</span>
+                <span className="zn-cat-label">{c.label}</span>
+              </button>
+            ))}
+          </nav>
+        )}
       </header>
 
       {rightOpen && <div className="right-drawer-backdrop" onClick={() => setRightOpen(false)} />}
@@ -67,16 +200,11 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user, onLogout 
           <button onClick={() => setRightOpen(false)}>✕</button>
         </div>
 
-        <div className="right-drawer-search">
-          <span>🔍</span>
-          <input type="text" placeholder="Search..." onChange={(e) => onSearch(e.target.value)} />
-        </div>
-
         <a className="right-nav-link" onClick={() => goTo('/shops')}>🏪 Shops</a>
         <a className="right-nav-link" onClick={() => goTo('/offers')}>🎁 Offers</a>
         <a className="right-nav-link" onClick={() => goTo('/contact')}>📞 Contact</a>
 
-        {/* Account in mobile drawer */}
+        {/* Account in drawer */}
         <div className="right-drawer-account" onClick={() => goTo('/account')} style={{ cursor: 'pointer' }}>
           <div className="account-circle-sm">{getInitials(user?.name)}</div>
           <div>
