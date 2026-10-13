@@ -82,6 +82,7 @@ export default function App() {
             <main className="main-content">
               <Home
                 activeCat={activeCat}
+                onCategory={setActiveCat}
                 searchQuery={searchQuery}
                 orders={orders}
                 user={user}

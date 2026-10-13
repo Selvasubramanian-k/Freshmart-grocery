@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react'
 import Banner          from '../components/Banner.jsx'
 import ProductList     from '../components/ProductList.jsx'
 import Recommendations from '../components/Recommendations.jsx'
+import FeaturedRows    from '../components/FeaturedRows.jsx'
+import CategorySections from '../components/CategorySection.jsx'
 import useWeather      from '../hooks/useWeather.js'
 import {
   getTimeSlot, classifyWeather, SLOT_META, WEATHER_META,
@@ -15,7 +17,7 @@ function firstName(user) {
   return n.charAt(0).toUpperCase() + n.slice(1)
 }
 
-export default function Home({ activeCat, searchQuery, orders = [], user, ...cartProps }) {
+export default function Home({ activeCat, onCategory, searchQuery, orders = [], user, ...cartProps }) {
   const { cart } = cartProps
 
   // time -> 5 min once refresh (morning -> afternoon mari mathirum)
@@ -74,7 +76,14 @@ export default function Home({ activeCat, searchQuery, orders = [], user, ...car
         </>
       )}
 
-      <ProductList activeCat={activeCat} searchQuery={searchQuery} cart={cart} {...cartProps} />
+      {showReco ? (
+        <>
+          <FeaturedRows {...cartProps} />
+          <CategorySections onCategory={onCategory} {...cartProps} />
+        </>
+      ) : (
+        <ProductList activeCat={activeCat} searchQuery={searchQuery} cart={cart} {...cartProps} />
+      )}
     </>
   )
 }
