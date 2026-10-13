@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Navbar      from './components/Navbar.jsx'
 import Sidebar     from './components/Sidebar.jsx'
 import CartDrawer  from './components/CartDrawer.jsx'
@@ -10,6 +10,7 @@ import Shops       from './pages/Shops.jsx'
 import Offers      from './pages/Offers.jsx'
 import Contact     from './pages/Contact.jsx'
 import Login       from './pages/Login.jsx'
+import Account     from './pages/Account.jsx'
 import { loadOrders, saveOrder } from './utils/orderHistory.js'
 
 export default function App() {
@@ -45,6 +46,13 @@ export default function App() {
     clearCart()
   }
 
+  const handleLogout = () => {
+    setUser(null)
+    setOrders([])
+    setDrawer(false)
+    navigate('/login')
+  }
+
   const cartProps = { cart, addToCart, increment, decrement, removeItem }
 
   const handleLogin = (userData) => {
@@ -63,6 +71,7 @@ export default function App() {
           cartCount={Object.values(cart).reduce((s, q) => s + q, 0)}
           onSearch={setSearch}
           user={user}
+          onLogout={handleLogout}
         />
       )}
 
@@ -87,6 +96,11 @@ export default function App() {
               />
             </main>
           </div>
+        }/>
+        <Route path="/account" element={
+          user
+            ? <Account user={user} orders={orders} increment={increment} onLogout={handleLogout} onOpenCart={() => setDrawer(true)} />
+            : <Navigate to="/login" replace />
         }/>
         <Route path="/checkout" element={<Checkout cart={cart} onPlaceOrder={handlePlaceOrder} />}/>
         <Route path="/success"  element={<Success />} />

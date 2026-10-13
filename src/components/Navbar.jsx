@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
+function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user, onLogout }) {
   const [rightOpen, setRightOpen] = useState(false)
-  const [accountOpen, setAccountOpen] = useState(false)
   const navigate = useNavigate()
 
   const goTo = (path) => {
@@ -12,8 +11,8 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
   }
 
   const handleLogout = () => {
-    setAccountOpen(false)
-    navigate('/login')
+    setRightOpen(false)
+    onLogout()
   }
 
   // Get initials from name
@@ -44,33 +43,11 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
           <a className="nav-link" onClick={() => goTo('/contact')}>Contact</a>
           
 
-          {/* Account Circle */}
+          {/* Account icon -> /account page */}
           <div className="account-wrapper">
-            <button className="account-circle" onClick={() => setAccountOpen(o => !o)}>
+            <button className="account-circle" aria-label="My account" onClick={() => navigate('/account')}>
               {getInitials(user?.name)}
             </button>
-
-            {/* Account Dropdown Drawer */}
-            {accountOpen && (
-              <>
-                <div className="account-backdrop" onClick={() => setAccountOpen(false)} />
-                <div className="account-drawer">
-                  <div className="account-drawer-top">
-                    <div className="account-drawer-circle">
-                      {getInitials(user?.name)}
-                    </div>
-                    <div className="account-drawer-info">
-                      <p className="account-drawer-name">{user?.name || 'Guest User'}</p>
-                      <p className="account-drawer-email">{user?.email || user?.phone || 'guest@freshmart.com'}</p>
-                    </div>
-                  </div>
-                  <div className="account-drawer-divider" />
-                  <button className="account-drawer-logout" onClick={handleLogout}>
-                    🚪 Logout
-                  </button>
-                </div>
-              </>
-            )}
           </div>
         </div>
 
@@ -100,7 +77,7 @@ function Navbar({ onMenuClick, onCartClick, cartCount, onSearch, user }) {
         <a className="right-nav-link" onClick={() => goTo('/contact')}>📞 Contact</a>
 
         {/* Account in mobile drawer */}
-        <div className="right-drawer-account">
+        <div className="right-drawer-account" onClick={() => goTo('/account')} style={{ cursor: 'pointer' }}>
           <div className="account-circle-sm">{getInitials(user?.name)}</div>
           <div>
             <p className="right-account-name">{user?.name || 'Guest User'}</p>

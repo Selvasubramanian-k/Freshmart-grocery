@@ -1484,3 +1484,88 @@ body {
   cursor: pointer;
 }
 .offer-browse:hover { background: var(--primary); color: #fff; }
+
+/* ══════════════════ ACCOUNT PAGE (Zepto-style) ══════════════════ */
+.acc-page { padding: calc(var(--header-h) + 20px) 16px 32px; }
+.acc-shell {
+  max-width: 1150px; margin: 0 auto; background: var(--white);
+  border: 1px solid var(--border); border-radius: 20px;
+  display: grid; grid-template-columns: 380px 1fr; overflow: hidden; min-height: 520px;
+}
+.acc-left { padding: 24px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 18px; }
+.acc-user { display: flex; align-items: center; gap: 14px; }
+.acc-avatar {
+  width: 56px; height: 56px; border-radius: 50%; background: var(--primary-light); color: var(--primary-dark);
+  display: grid; place-items: center; font-size: 24px; font-weight: 800;
+}
+.acc-name { margin: 0; font-size: 20px; font-weight: 800; }
+.acc-sub  { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.acc-wallet {
+  background: #f1f3f6; border: 0; border-radius: 14px; padding: 14px; text-align: left;
+  font-family: inherit; cursor: pointer; width: 100%;
+}
+.acc-wallet-top { display: flex; justify-content: space-between; font-weight: 700; font-size: 14px;
+  padding-bottom: 12px; border-bottom: 1px dashed #c9ced6; }
+.acc-wallet-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; font-size: 14px; }
+.acc-wallet-btn { background: #111; color: #fff; padding: 10px 16px; border-radius: 10px; font-weight: 700; }
+.acc-menu { display: flex; flex-direction: column; margin: 0 -24px; }
+.acc-menu-item {
+  display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: none; border: 0;
+  font-family: inherit; font-size: 15px; font-weight: 500; cursor: pointer; text-align: left;
+}
+.acc-menu-item:hover { background: #f6f8fa; }
+.acc-menu-item.active { background: #e2e8f0; font-weight: 700; }
+.acc-menu-icon { font-size: 20px; width: 24px; text-align: center; }
+.acc-logout {
+  align-self: center; background: #fff; color: #e11d48; border: 1.5px solid #f43f5e; border-radius: 10px;
+  padding: 10px 40px; font-family: inherit; font-weight: 700; cursor: pointer; margin-top: auto;
+}
+.acc-logout:hover { background: #fff1f2; }
+
+.acc-right { background: #f4f6f9; display: flex; flex-direction: column; min-width: 0; }
+.acc-right-head {
+  display: flex; align-items: center; gap: 10px; padding: 16px 20px; font-weight: 800; font-size: 16px;
+  background: #fff; border-bottom: 1px solid var(--border);
+}
+.acc-back { display: none; background: none; border: 0; font-size: 28px; line-height: 1; cursor: pointer; padding: 0 6px; }
+.acc-right-body { padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; max-height: 640px; }
+
+.acc-order { background: #fff; border-radius: 18px; overflow: hidden; }
+.acc-order-top { display: flex; justify-content: space-between; gap: 12px; padding: 16px 18px 8px; }
+.acc-order-status { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+.acc-tick { background: #16a34a; color: #fff; width: 16px; height: 16px; border-radius: 50%; font-size: 10px; display: grid; place-items: center; }
+.acc-order-date { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.acc-order-amt { font-weight: 800; white-space: nowrap; }
+.acc-thumbs { display: flex; gap: 8px; flex-wrap: wrap; padding: 8px 18px 14px; }
+.acc-thumb { position: relative; width: 46px; height: 46px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; }
+.acc-thumb img, .acc-thumb .img-emoji { width: 100%; height: 100%; object-fit: cover; display: grid; place-items: center; }
+.acc-qty { position: absolute; right: 0; bottom: 0; background: #111; color: #fff; font-size: 10px; font-weight: 700; padding: 1px 5px; border-top-left-radius: 6px; }
+.acc-again {
+  width: 100%; background: none; border: 0; border-top: 1px solid var(--border); padding: 14px;
+  color: #f0306a; font-family: inherit; font-weight: 800; font-size: 14px; cursor: pointer;
+}
+.acc-again:hover { background: #fff5f8; }
+
+.acc-card { background: #fff; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.acc-card h3 { margin: 0; font-size: 16px; }
+.acc-muted { color: var(--muted); font-size: 14px; margin: 0; }
+.acc-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+.acc-row:last-child { border-bottom: 0; }
+.acc-addr { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+.acc-del { background: none; border: 0; color: #e11d48; font-family: inherit; font-weight: 700; cursor: pointer; }
+.acc-chips { display: flex; gap: 8px; }
+.acc-chip { border: 1.5px solid var(--border); background: #fff; border-radius: 999px; padding: 6px 16px; font-family: inherit; font-weight: 600; cursor: pointer; }
+.acc-chip.on { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
+.acc-input { border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 12px; font-family: inherit; font-size: 14px; resize: vertical; }
+.acc-primary { background: var(--primary); color: #fff; border: 0; border-radius: 10px; padding: 11px 20px; font-family: inherit; font-weight: 700; cursor: pointer; align-self: flex-start; }
+.acc-primary:hover { background: var(--primary-dark); }
+.acc-empty { background: #fff; border-radius: 18px; padding: 40px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.acc-empty-emoji { font-size: 48px; }
+
+@media (max-width: 860px) {
+  .acc-shell { grid-template-columns: 1fr; }
+  .acc-left { border-right: 0; }
+  .acc-hide-m { display: none; }
+  .acc-back { display: block; }
+  .acc-right-body { max-height: none; }
+}
