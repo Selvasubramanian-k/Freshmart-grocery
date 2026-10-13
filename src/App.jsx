@@ -102,7 +102,7 @@ export default function App() {
             ? <Account user={user} orders={orders} increment={increment} onLogout={handleLogout} onOpenCart={() => setDrawer(true)} />
             : <Navigate to="/login" replace />
         }/>
-        <Route path="/checkout" element={<Checkout cart={cart} onPlaceOrder={handlePlaceOrder} />}/>
+        <Route path="/checkout" element={<Checkout cart={cart} user={user} onPlaceOrder={handlePlaceOrder} increment={increment} decrement={decrement} />}/>
         <Route path="/success"  element={<Success />} />
         <Route path="/shops"    element={<Shops />} />
         <Route path="/offers"   element={<Offers {...cartProps} onBrowse={setActiveCat} />} />
