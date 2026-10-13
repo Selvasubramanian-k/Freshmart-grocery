@@ -11,7 +11,7 @@ export const OFFERS = [
     sub: 'Up to 30% off',
     headline: 'Up to 30% off on fresh fruits and vegetables',
     color: '#00a870',
-    emoji: '🍎',
+    icon: 'apple',
     cat: 'fruits',
     browseLabel: 'Fruits & Vegetables',
     // Apple, Banana, Orange, Pineapple, Carrot, Tomato, Onion
@@ -23,7 +23,7 @@ export const OFFERS = [
     sub: 'Free delivery ₹299+',
     headline: 'Free delivery on dairy and egg orders above ₹299',
     color: '#f5a623',
-    emoji: '🥛',
+    icon: 'milk',
     cat: 'dairy',
     browseLabel: 'Dairy',
     // Milk, Butter, Ghee, Curd, Eggs, Paneer, Buttermilk
@@ -35,7 +35,7 @@ export const OFFERS = [
     sub: '15% off today',
     headline: '15% off on meat and fish today',
     color: '#3b82f6',
-    emoji: '🐟',
+    icon: 'fish',
     cat: 'meat',
     browseLabel: 'Meat & Fish',
     // Fish, Chicken, Chicken Liver, Mutton
@@ -47,7 +47,7 @@ export const OFFERS = [
     sub: 'Buy 2 Get 1 Free',
     headline: 'Buy 2 Get 1 Free on snacks',
     color: '#ec4899',
-    emoji: '🍿',
+    icon: 'popcorn',
     cat: 'snacks',
     browseLabel: 'Snacks',
     // Lays, Bingo, Soft Drinks, Cookies, Ice Cream, Mixture, Marie

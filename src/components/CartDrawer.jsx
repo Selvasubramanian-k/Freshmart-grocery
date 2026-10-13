@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { getProduct, DELIVERY } from '../data/products.js'
 import ProductImage from './ProductImage.jsx'
 import { getPersonalRecommendations } from '../utils/recommend.js'
+import Icon from './Icon.jsx'
 
 
 
@@ -30,16 +31,16 @@ function CartDrawer({ isOpen, onClose, onOpen, cart, addToCart, increment, decre
         <div className="drawer-header">
           <button className="drawer-back" onClick={onClose}>← Back</button>
           <span className="drawer-title">
-            🛒 Cart
+            <Icon name="shopping-cart" /> Cart
             {totalQty > 0 && <span className="drawer-badge">{totalQty}</span>}
           </span>
-          <button className="drawer-close" onClick={onClose}>✕</button>
+          <button className="drawer-close" onClick={onClose}><Icon name="x" /></button>
         </div>
 
         <div className="drawer-items">
           {entries.length === 0 ? (
             <div className="drawer-empty">
-              <span className="drawer-empty-icon">🛒</span>
+              <span className="drawer-empty-icon"><Icon name="shopping-cart" /></span>
               <p style={{ fontWeight: 700 }}>Your cart is empty</p>
               <p style={{ fontSize: 13 }}>Add some fresh items!</p>
             </div>
@@ -58,14 +59,14 @@ function CartDrawer({ isOpen, onClose, onOpen, cart, addToCart, increment, decre
                     <button className="qty-btn" onClick={() => increment(Number(id))}>+</button>
                   </div>
                 </div>
-                <button className="cart-item-remove" onClick={() => removeItem(Number(id))}>🗑</button>
+                <button className="cart-item-remove" onClick={() => removeItem(Number(id))}><Icon name="trash" /></button>
               </div>
             )
           })}
 
           {suggestions.length > 0 && (
             <div className="drawer-suggest">
-              <p className="drawer-suggest-title">✨ You may also need</p>
+              <p className="drawer-suggest-title"><Icon name="sparkles" /> You may also need</p>
               {suggestions.map(({ product, reason }) => (
                 <div className="suggest-row" key={product.id}>
                   <ProductImage className="cart-item-img" product={product} />
@@ -94,7 +95,7 @@ function CartDrawer({ isOpen, onClose, onOpen, cart, addToCart, increment, decre
 
       {totalQty > 0 && !isOpen && !isCheckout && (             
     <button className="cart-float" onClick={onOpen}>
-      <span className="cf-icon">🛍️</span>
+      <span className="cf-icon"><Icon name="shopping-bag" /></span>
       <div>
         <div className="cf-label">{totalQty} item{totalQty > 1 ? 's' : ''}</div>
         <div className="cf-total">₹{subtotal}</div>

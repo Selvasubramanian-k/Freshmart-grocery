@@ -1973,28 +1973,53 @@ textarea.ck-input { resize: vertical; }
 .zn-cat-icon {
   width: 52px;
   height: 52px;
-  border-radius: 50%;
-  background: var(--primary-light);
+  border-radius: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
+  font-size: 26px;
   line-height: 1;
-  transition: transform .15s, box-shadow .15s;
+  transition: transform .2s, background .15s, color .15s, border-color .15s;
 }
-.zn-cat:hover .zn-cat-icon { transform: translateY(-2px); }
+/* hover + selected = light green (not white / dark) */
+.zn-cat:hover .zn-cat-icon {
+  transform: translateY(-3px) rotate(-6deg);
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border-color: #b9e8d5;
+}
 .zn-cat-label { font-size: 12px; font-weight: 700; color: var(--muted); white-space: nowrap; }
-.zn-cat.active .zn-cat-icon { box-shadow: 0 0 0 2px var(--primary); }
+.zn-cat.active .zn-cat-icon {
+  transform: translateY(-2px);
+  background: #d4f3e5;
+  color: var(--primary-dark);
+  border-color: var(--primary);
+}
 .zn-cat.active .zn-cat-label { color: #007a50; }
-.zn-cat.active::after {
-  content: '';
+.zn-cat:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; border-radius: 12px; }
+.zn-cat-badge {
   position: absolute;
-  left: 14%;
-  right: 14%;
-  bottom: 0;
-  height: 3px;
-  border-radius: 3px 3px 0 0;
-  background: var(--primary);
+  top: 4px;
+  left: 50%;
+  margin-left: 12px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #f5a623;
+  color: #4a2f00;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  line-height: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.zn-eta .ic, .zn-eta svg { vertical-align: -.14em; color: var(--primary-dark); }
+.right-nav-link svg, .btn-logout svg { vertical-align: -.2em; margin-right: 4px; font-size: 17px; }
+@media (prefers-reduced-motion: reduce) {
+  .zn-cat:hover .zn-cat-icon, .zn-cat.active .zn-cat-icon { transform: none; }
 }
 
 @media (max-width: 767px) {
@@ -2112,7 +2137,7 @@ textarea.ck-input { resize: vertical; }
   .banner-btn { padding: 3px 10px; font-size: 11px; }
 
   .zn-cat { width: 80px; padding: 6px 4px 8px; gap: 4px; }
-  .zn-cat-icon { width: 42px; height: 42px; font-size: 21px; }
+  .zn-cat-icon { width: 44px; height: 44px; font-size: 24px; border-radius: 12px; }
 
   .reco-title, .zs-title { font-size: 17px; }
   .reco-item { flex-basis: 150px; }
@@ -2130,3 +2155,13 @@ textarea.ck-input { resize: vertical; }
   .zc-name { font-size: 12.5px; }
   .zs-arrow { top: 56px; }
 }
+
+/* ══════════════════ LUCIDE ICONS (replace emojis) ══════════════════ */
+/* Icons are inline 1em SVGs, so headings and buttons keep their original font and layout. */
+svg.lucide { flex: none; vertical-align: -0.15em; }
+.reco-title svg.lucide, .zs-title svg.lucide, .section-title svg.lucide, .page-title svg.lucide { color: var(--primary-dark); }
+.drawer-empty-icon, .grid-empty-icon, .ck-empty-emoji, .acc-empty-emoji { line-height: 0; color: var(--primary); }
+.drawer-empty-icon svg.lucide, .grid-empty-icon svg.lucide, .ck-empty-emoji svg.lucide, .acc-empty-emoji svg.lucide { opacity: .55; }
+.os-strip-icon, .sidebar-icon, .acc-menu-icon, .ck-addr-ic, .ck-logo.em { color: var(--primary-dark); }
+.os-strip-icon, .cf-icon, .sidebar-icon, .acc-menu-icon, .ck-addr-ic, .ck-logo.em { display: inline-flex; align-items: center; justify-content: center; }
+.cart-item-remove { display: inline-flex; align-items: center; justify-content: center; }

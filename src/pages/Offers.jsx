@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import ProductCard from '../components/ProductCard.jsx'
 import { OFFERS } from '../data/offers.js'
 import { getProduct } from '../data/products.js'
+import Icon from '../components/Icon.jsx'
 
 export default function Offers({ cart = {}, addToCart, increment, decrement, onBrowse }) {
   const navigate = useNavigate()
@@ -27,7 +28,7 @@ export default function Offers({ cart = {}, addToCart, increment, decrement, onB
   return (
     <div className="page-wrapper">
       <button className="page-back" onClick={() => navigate('/')}>← Back</button>
-      <h1 className="page-title">🎁 Special Offers</h1>
+      <h1 className="page-title"><Icon name="gift" /> Special Offers</h1>
 
       <div className="offers-grid-page">
         {OFFERS.map((o) => (
@@ -44,7 +45,7 @@ export default function Offers({ cart = {}, addToCart, increment, decrement, onB
               <span className="offer-page-sub">{o.sub}</span>
               <span className="offer-page-btn">{activeId === o.id ? 'Showing below ↓' : 'See products'}</span>
             </span>
-            <span className="offer-page-emoji">{o.emoji}</span>
+            <span className="offer-page-emoji"><Icon name={o.icon} /></span>
           </button>
         ))}
       </div>
@@ -54,7 +55,7 @@ export default function Offers({ cart = {}, addToCart, increment, decrement, onB
       {active && (
         <section ref={panelRef} className="offer-panel" style={{ '--offer-color': active.color }}>
           <div className="offer-panel-head">
-            <span className="offer-panel-emoji">{active.emoji}</span>
+            <span className="offer-panel-emoji"><Icon name={active.icon} /></span>
             <div className="offer-panel-text">
               <h2 className="offer-panel-title">{active.title}</h2>
               <p className="offer-panel-msg">{active.headline}</p>

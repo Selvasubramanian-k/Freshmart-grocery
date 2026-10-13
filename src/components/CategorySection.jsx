@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { CATEGORIES } from '../data/categories.js'
 import { PRODUCTS } from '../data/products.js'
 import ZCard from './ZCard.jsx'
+import Icon from './Icon.jsx'
 
 // Oru category = oru heading ("Dairy") + "See All" + side scroll row.
 function Row({ cat, onCategory, cart, addToCart, increment, decrement }) {
@@ -14,7 +15,7 @@ function Row({ cat, onCategory, cart, addToCart, increment, decrement }) {
   return (
     <section className="zs-section">
       <div className="zs-head">
-        <h2 className="zs-title"><span aria-hidden="true">{cat.icon}</span> {cat.title || cat.label}</h2>
+        <h2 className="zs-title"><Icon name={cat.icon} /> {cat.title || cat.label}</h2>
         <button type="button" className="zs-seeall" onClick={() => onCategory(cat.id)}>See All ›</button>
       </div>
       <div className="zs-rowwrap">

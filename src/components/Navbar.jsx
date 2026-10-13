@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { CATEGORIES } from '../data/categories.js'
+import Icon from './Icon.jsx'
 
 // ─────────────────────────────────────────────────────────────
 //  Maathanum na inga mattum maathunga
@@ -69,7 +70,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
   // Get initials from name
   const getInitials = (name) => {
-    if (!name) return '👤'
+    if (!name) return <Icon name="user" />
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
   }
 
@@ -92,7 +93,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
               aria-expanded={addrOpen}
               onClick={openAddress}
             >
-              <span className="zn-eta">⚡ {DELIVERY_ETA}</span>
+              <span className="zn-eta"><Icon name="zap" /> {DELIVERY_ETA}</span>
               <span className="zn-addr">
                 <span className="zn-addr-text">{address.label} · {address.text || 'Add address'}</span>
                 <span className="zn-caret" aria-hidden="true">▾</span>
@@ -111,7 +112,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
                 >
                   <div className="zn-pop-head">
                     <span>Delivery location</span>
-                    <button type="button" className="zn-pop-close" aria-label="Close" onClick={closeAddress}>✕</button>
+                    <button type="button" className="zn-pop-close" aria-label="Close" onClick={closeAddress}><Icon name="x" /></button>
                   </div>
 
                   <div className="zn-chips" role="group" aria-label="Address type">
@@ -145,7 +146,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
           {/* Search with rotating hint */}
           <div className="zn-search">
-            <span className="zn-search-icon" aria-hidden="true">🔍</span>
+            <span className="zn-search-icon" aria-hidden="true"><Icon name="search" /></span>
             <div className="zn-search-field">
               <input
                 type="text"
@@ -166,10 +167,10 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
               {getInitials(user?.name)}
             </button>
             <button type="button" className="zn-cart" aria-label={`Cart, ${cartCount} items`} onClick={onCartClick}>
-              🛒
+              <Icon name="shopping-cart" />
               {cartCount > 0 && <span className="zn-cart-badge">{cartCount}</span>}
             </button>
-            <button type="button" className="zn-menu" aria-label="Menu" onClick={() => setRightOpen(true)}>⋮</button>
+            <button type="button" className="zn-menu" aria-label="Menu" onClick={() => setRightOpen(true)}><Icon name="ellipsis-vertical" /></button>
           </div>
         </div>
 
@@ -184,7 +185,8 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
                 aria-current={activeCat === c.id ? 'true' : undefined}
                 onClick={() => onCategory(c.id)}
               >
-                <span className="zn-cat-icon" aria-hidden="true">{c.icon}</span>
+                <span className="zn-cat-icon" aria-hidden="true"><Icon id={c.id} /></span>
+                {c.badge && <span className="zn-cat-badge">{c.badge}</span>}
                 <span className="zn-cat-label">{c.label}</span>
               </button>
             ))}
@@ -197,12 +199,12 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
       <div className={`right-drawer ${rightOpen ? 'open' : ''}`}>
         <div className="right-drawer-header">
           <span>Menu</span>
-          <button onClick={() => setRightOpen(false)}>✕</button>
+          <button onClick={() => setRightOpen(false)}><Icon name="x" /></button>
         </div>
 
-        <a className="right-nav-link" onClick={() => goTo('/shops')}>🏪 Shops</a>
-        <a className="right-nav-link" onClick={() => goTo('/offers')}>🎁 Offers</a>
-        <a className="right-nav-link" onClick={() => goTo('/contact')}>📞 Contact</a>
+        <a className="right-nav-link" onClick={() => goTo('/shops')}><Icon name="store" /> Shops</a>
+        <a className="right-nav-link" onClick={() => goTo('/offers')}><Icon name="gift" /> Offers</a>
+        <a className="right-nav-link" onClick={() => goTo('/contact')}><Icon name="phone" /> Contact</a>
 
         {/* Account in drawer */}
         <div className="right-drawer-account" onClick={() => goTo('/account')} style={{ cursor: 'pointer' }}>
@@ -215,7 +217,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
         <div className="right-drawer-btns">
           <button className="btn-seller" onClick={() => goTo('/seller')}>Become a Seller</button>
-          <button className="btn-logout" onClick={handleLogout}>🚪 Logout</button>
+          <button className="btn-logout" onClick={handleLogout}><Icon name="log-out" /> Logout</button>
         </div>
       </div>
     </>

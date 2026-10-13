@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getProduct, DELIVERY } from '../data/products.js'
 import ProductImage from '../components/ProductImage.jsx'
+import Icon from '../components/Icon.jsx'
 
 // ── Saved addresses -> localStorage (backend illa) ──
 const addrKey   = (u) => `freshmart_addresses:${(u?.email || u?.phone || 'guest').toLowerCase()}`
@@ -9,10 +10,10 @@ const readAddrs = (u) => { try { const a = JSON.parse(localStorage.getItem(addrK
 const saveAddrs = (u, list) => { try { localStorage.setItem(addrKey(u), JSON.stringify(list)) } catch { /* storage blocked */ } }
 
 const TABS = [
-  { id: 'orders',    label: 'Orders',          icon: '🛍️' },
-  { id: 'support',   label: 'Customer Support', icon: '💬' },
-  { id: 'addresses', label: 'Saved Addresses',  icon: '📍' },
-  { id: 'profile',   label: 'Profile',          icon: '👤' },
+  { id: 'orders',    label: 'Orders',          icon: 'shopping-bag' },
+  { id: 'support',   label: 'Customer Support', icon: 'headphones' },
+  { id: 'addresses', label: 'Saved Addresses',  icon: 'map-pin' },
+  { id: 'profile',   label: 'Profile',          icon: 'user' },
 ]
 
 const fmtDate = (iso) => {
@@ -77,7 +78,7 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
 
           <button className="acc-wallet" onClick={() => navigate('/offers')}>
             <div className="acc-wallet-top">
-              <span>👛 FreshMart Cash &amp; Gift Card</span><span>›</span>
+              <span><Icon name="wallet" /> FreshMart Cash &amp; Gift Card</span><span><Icon name="chevron-right" /></span>
             </div>
             <div className="acc-wallet-bottom">
               <span>Available Balance: <b>₹0</b></span>
@@ -88,7 +89,7 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
           <nav className="acc-menu">
             {TABS.map(t => (
               <button key={t.id} className={`acc-menu-item ${tab === t.id ? 'active' : ''}`} onClick={() => pick(t.id)}>
-                <span className="acc-menu-icon">{t.icon}</span>{t.label}
+                <span className="acc-menu-icon"><Icon name={t.icon} /></span>{t.label}
               </button>
             ))}
           </nav>
@@ -109,7 +110,7 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
             {tab === 'orders' && (
               history.length === 0 ? (
                 <div className="acc-empty">
-                  <div className="acc-empty-emoji">🛒</div>
+                  <div className="acc-empty-emoji"><Icon name="shopping-cart" /></div>
                   <p>No orders yet</p>
                   <button className="acc-primary" onClick={() => navigate('/')}>Start shopping</button>
                 </div>
@@ -117,10 +118,10 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
                 <div className="acc-order" key={o.id}>
                   <div className="acc-order-top">
                     <div>
-                      <div className="acc-order-status">Order delivered <span className="acc-tick">✓</span></div>
+                      <div className="acc-order-status">Order delivered <span className="acc-tick"><Icon name="check" /></span></div>
                       <div className="acc-order-date">Placed at {fmtDate(o.date)}</div>
                     </div>
-                    <div className="acc-order-amt">₹{orderTotal(o.items)} ›</div>
+                    <div className="acc-order-amt">₹{orderTotal(o.items)} <Icon name="chevron-right" /></div>
                   </div>
                   <div className="acc-thumbs">
                     {o.items.map(([id, qty]) => {

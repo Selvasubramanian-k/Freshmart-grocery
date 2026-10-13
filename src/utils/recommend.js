@@ -20,10 +20,10 @@ export function getTimeSlot(date = new Date()) {
 }
 
 export const SLOT_META = {
-  morning:   { greeting: 'Good Morning',   emoji: '🌅', reason: 'Great for breakfast' },
-  afternoon: { greeting: 'Good Afternoon', emoji: '☀️', reason: 'For lunch & cooking' },
-  evening:   { greeting: 'Good Evening',   emoji: '🌇', reason: 'Perfect evening snack' },
-  night:     { greeting: 'Good Night',     emoji: '🌙', reason: 'For dinner & tomorrow' },
+  morning:   { greeting: 'Good Morning',   icon: 'sunrise', reason: 'Great for breakfast' },
+  afternoon: { greeting: 'Good Afternoon', icon: 'sun', reason: 'For lunch & cooking' },
+  evening:   { greeting: 'Good Evening',   icon: 'sunset', reason: 'Perfect evening snack' },
+  night:     { greeting: 'Good Night',     icon: 'moon', reason: 'For dinner & tomorrow' },
 }
 
 // Earlier in list = higher priority
@@ -55,10 +55,10 @@ export function classifyWeather(weather) {
 }
 
 export const WEATHER_META = {
-  hot:   { emoji: '🥵', label: 'Hot',   reason: 'Beat the heat' },
-  rainy: { emoji: '🌧️', label: 'Rainy', reason: 'Perfect for rainy weather' },
-  cool:  { emoji: '❄️', label: 'Cool',  reason: 'Warm up with this' },
-  mild:  { emoji: '🌤️', label: 'Mild',  reason: '' },
+  hot:   { icon: 'thermometer-sun', label: 'Hot',   reason: 'Beat the heat' },
+  rainy: { icon: 'cloud-rain', label: 'Rainy', reason: 'Perfect for rainy weather' },
+  cool:  { icon: 'snowflake', label: 'Cool',  reason: 'Warm up with this' },
+  mild:  { icon: 'cloud-sun', label: 'Mild',  reason: '' },
 }
 
 const WEATHER_RULES = {

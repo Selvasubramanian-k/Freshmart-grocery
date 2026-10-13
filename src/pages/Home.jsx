@@ -9,6 +9,7 @@ import {
   getTimeSlot, classifyWeather, SLOT_META, WEATHER_META,
   getContextRecommendations, getPersonalRecommendations,
 } from '../utils/recommend.js'
+import Icon from '../components/Icon.jsx'
 
 // "selva kumar" -> "Selva"   (Guest / name illaina name kaattaadhu)
 function firstName(user) {
@@ -52,7 +53,7 @@ export default function Home({ activeCat, onCategory, searchQuery, orders = [], 
   const showReco = activeCat === 'all' && searchQuery === ''
 
   const weatherText = weather && weatherMeta
-    ? `${weatherMeta.emoji} ${Math.round(weather.temp)}°C · ${weatherMeta.label} weather`
+    ? <><Icon name={weatherMeta.icon} /> {Math.round(weather.temp)}°C · {weatherMeta.label} weather</>
     : null
 
   return (
@@ -62,14 +63,14 @@ export default function Home({ activeCat, onCategory, searchQuery, orders = [], 
       {showReco && (
         <>
           <Recommendations
-            title={hasCart ? '✨ You may also need' : '✨ Recommended for you'}
+            title={<><Icon name="sparkles" /> {hasCart ? 'You may also need' : 'Recommended for you'}</>}
             subtitle={hasCart ? 'Based on items in your cart' : 'Based on your previous orders'}
             items={personal}
             {...cartProps}
           />
           <Recommendations
-            title={`${slotMeta.emoji} ${slotMeta.greeting}${name ? ' ' + name : ''}!!!`}
-            subtitle={['Picked for this time of day', weatherText].filter(Boolean).join(' · ')}
+            title={<><Icon name={slotMeta.icon} /> {slotMeta.greeting}{name ? ' ' + name : ''}!!!</>}
+            subtitle={<>Picked for this time of day{weatherText && <> · {weatherText}</>}</>}
             items={context}
             {...cartProps}
           />

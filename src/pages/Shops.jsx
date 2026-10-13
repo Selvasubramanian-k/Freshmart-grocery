@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom'
+import Icon from '../components/Icon.jsx'
 
 export default function Shops() {
   const navigate = useNavigate()
   return (
     <div className="page-wrapper">
       <button className="page-back" onClick={() => navigate('/')}>← Back</button>
-      <h1 className="page-title">🏪 Our Shops</h1>
+      <h1 className="page-title"><Icon name="store" /> Our Shops</h1>
       <div className="shops-grid">
         {[
           { name:'FreshMart Chennai',    area:'Anna Nagar',    time:'8AM - 10PM', rating:'4.8' },
@@ -15,9 +16,9 @@ export default function Shops() {
         ].map((s, i) => (
           <div key={i} className="shop-card">
             <p className="shop-card-name">{s.name}</p>
-            <p className="shop-card-info">📍 {s.area}</p>
-            <p className="shop-card-info">🕐 {s.time}</p>
-            <p className="shop-card-rating">⭐ {s.rating}</p>
+            <p className="shop-card-info"><Icon name="map-pin" /> {s.area}</p>
+            <p className="shop-card-info"><Icon name="clock" /> {s.time}</p>
+            <p className="shop-card-rating"><Icon name="star" /> {s.rating}</p>
           </div>
         ))}
       </div>

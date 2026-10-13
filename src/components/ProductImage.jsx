@@ -1,5 +1,6 @@
 // Product image. Image illaina emoji placeholder kaattum (broken image varadhu)
 import { useState } from 'react'
+import Icon from './Icon.jsx'
 
 export default function ProductImage({ product, className = '', ...rest }) {
   const [failed, setFailed] = useState(false)
@@ -11,7 +12,7 @@ export default function ProductImage({ product, className = '', ...rest }) {
         role="img"
         aria-label={product.name}
       >
-        {product.emoji || '🛒'}
+        <Icon name="shopping-cart" />
       </div>
     )
   }

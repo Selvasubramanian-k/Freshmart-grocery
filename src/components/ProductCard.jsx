@@ -1,4 +1,5 @@
 import ProductImage from './ProductImage.jsx'
+import Icon from './Icon.jsx'
 
 function ProductCard({product,qty,onAdd,onInc,onDec,reason}) {
   return (
@@ -25,7 +26,7 @@ function ProductCard({product,qty,onAdd,onInc,onDec,reason}) {
 
           {qty === 0 ? (
             <button className="btn-add-cart" onClick={() => onAdd(product)}>
-              🛒 Cart
+              <Icon name="shopping-cart" /> Cart
             </button>
           ) : (
             <div className="qty-stepper">

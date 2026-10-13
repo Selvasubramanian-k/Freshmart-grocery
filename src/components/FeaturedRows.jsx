@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { PRODUCTS } from '../data/products.js'
 import ZCard from './ZCard.jsx'
+import Icon from './Icon.jsx'
 
 // Bestsellers: "popular" tag, every category la irunthum konjam konjam (round-robin)
 function pickBestsellers(limit = 10) {
@@ -22,13 +23,13 @@ function pickDeals(limit = 10) {
     .slice(0, limit)
 }
 
-function Row({ title, items, cart, addToCart, increment, decrement }) {
+function Row({ title, icon, items, cart, addToCart, increment, decrement }) {
   const ref = useRef(null)
   if (items.length === 0) return null
   return (
     <section className="zs-section">
       <div className="zs-head">
-        <h2 className="zs-title">{title}</h2>
+        <h2 className="zs-title">{icon && <Icon name={icon} />} {title}</h2>
       </div>
       <div className="zs-rowwrap">
         <div className="zs-row" ref={ref}>
@@ -48,8 +49,8 @@ function Row({ title, items, cart, addToCart, increment, decrement }) {
 export default function FeaturedRows(props) {
   return (
     <>
-      <Row title="🔥 Bestsellers" items={pickBestsellers()} {...props} />
-      <Row title="💸 Deals of the Day" items={pickDeals()} {...props} />
+      <Row title="Bestsellers" icon="flame" items={pickBestsellers()} {...props} />
+      <Row title="Deals of the Day" icon="tag" items={pickDeals()} {...props} />
     </>
   )
 }

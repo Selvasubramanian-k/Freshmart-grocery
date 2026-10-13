@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { getProduct, DELIVERY } from '../data/products.js'
 import ProductImage from './ProductImage.jsx'
+import Icon from './Icon.jsx'
 
 
 
@@ -35,27 +36,27 @@ function OrderSuccess({ onBack, orderedItems = [] }) {
         <h2 className="os-title">Order Placed Successfully!</h2>
         <p className="os-sub">
           Thank you for shopping with <strong>FreshMart</strong>.<br />
-          Your fresh groceries are on their way! 🚚
+          Your fresh groceries are on their way!
         </p>
 
         {/* Info strips */}
         <div className="os-info-strips">
           <div className="os-strip">
-            <span className="os-strip-icon">📦</span>
+            <span className="os-strip-icon"><Icon name="package" /></span>
             <div>
               <p className="os-strip-label">Order Status</p>
               <p className="os-strip-value">Confirmed & Processing</p>
             </div>
           </div>
           <div className="os-strip">
-            <span className="os-strip-icon">🚚</span>
+            <span className="os-strip-icon"><Icon name="truck" /></span>
             <div>
               <p className="os-strip-label">Estimated Delivery</p>
               <p className="os-strip-value">Within 30–45 minutes</p>
             </div>
           </div>
           <div className="os-strip">
-            <span className="os-strip-icon">📱</span>
+            <span className="os-strip-icon"><Icon name="smartphone" /></span>
             <div>
               <p className="os-strip-label">Tracking</p>
               <p className="os-strip-value">SMS will be sent to your phone</p>
@@ -66,17 +67,17 @@ function OrderSuccess({ onBack, orderedItems = [] }) {
         {/* Buttons */}
         <div className="os-btns">
           <button className="os-btn-primary" onClick={onBack}>
-            🛒 Continue Shopping
+            <Icon name="shopping-cart" /> Continue Shopping
           </button>
           <button className="os-btn-secondary" onClick={() => setShowOrders(o => !o)}>
-            📋 {showOrders ? 'Hide Orders' : 'View Orders'}
+            <Icon name="clipboard-list" /> {showOrders ? 'Hide Orders' : 'View Orders'}
           </button>
         </div>
 
         {/* Order items panel */}
         {showOrders && (
           <div className="os-order-panel">
-            <h3 className="os-order-panel-title">🧾 Your Order</h3>
+            <h3 className="os-order-panel-title"><Icon name="receipt" /> Your Order</h3>
 
             {orderedItems.length === 0 ? (
               <p style={{ textAlign:'center', color:'#aaa', fontSize:13 }}>No items found.</p>

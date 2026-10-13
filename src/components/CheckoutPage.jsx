@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { getProduct, DELIVERY } from '../data/products.js'
 import ProductImage from './ProductImage.jsx'
+import Icon from './Icon.jsx'
 
 // ─────────────────────────────────────────────────────────────
 //  Timeline checkout: Address -> Time & tip -> Payment (slide to pay)
@@ -17,9 +18,9 @@ const PAY_METHODS = [
   { group:'UPI',   id:'phonepe', logo:'P',  color:'#7a3fc4', name:'PhonePe', sub:'Pay with any bank account',  offer:{ type:'cashback', value:15,         label:'₹15 cashback later' } },
   { group:'UPI',   id:'paytm',   logo:'Pt', color:'#00a3d9', name:'Paytm',   sub:'UPI or Paytm balance',       offer:{ type:'flat',     value:10,         label:'₹10 off on first Paytm order' } },
   { group:'UPI',   id:'bhim',    logo:'B',  color:'#138808', name:'BHIM',    sub:'Any UPI app' },
-  { group:'Cards', id:'card',    icon:'💳', name:'Credit / Debit Card', sub:'Visa, Mastercard, RuPay',        offer:{ type:'pct',      value:5,  cap:25, label:'5% off on cards' } },
-  { group:'More',  id:'nb',      icon:'🏦', name:'Net Banking',         sub:'All major banks' },
-  { group:'More',  id:'cod',     icon:'💵', name:'Cash on Delivery',    sub:'Pay at the door' },
+  { group:'Cards', id:'card',    icon:'credit-card', name:'Credit / Debit Card', sub:'Visa, Mastercard, RuPay',        offer:{ type:'pct',      value:5,  cap:25, label:'5% off on cards' } },
+  { group:'More',  id:'nb',      icon:'landmark', name:'Net Banking',         sub:'All major banks' },
+  { group:'More',  id:'cod',     icon:'banknote', name:'Cash on Delivery',    sub:'Pay at the door' },
 ]
 const GROUP_TITLES = { UPI:'Pay with UPI', Cards:'Cards', More:'More ways to pay' }
 
@@ -96,7 +97,7 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
       <div className="ck-page">
         <button className="ck-back" onClick={onBack}>← Back to Shop</button>
         <div className="ck-card ck-empty">
-          <div className="ck-empty-emoji">🛒</div>
+          <div className="ck-empty-emoji"><Icon name="shopping-cart" /></div>
           <p>Your cart is empty</p>
           <button className="ck-btn" onClick={onBack}>Start shopping</button>
         </div>
@@ -157,7 +158,7 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
   return (
     <div className="ck-page">
       <button className="ck-back" onClick={onBack}>← Back to Shop</button>
-      <div className="ck-top"><h1 className="ck-title">Checkout</h1><span className="ck-secure">🔒 Secure payment</span></div>
+      <div className="ck-top"><h1 className="ck-title">Checkout</h1><span className="ck-secure"><Icon name="lock" /> Secure payment</span></div>
 
       {/* ORDER STRIP */}
       <div className={`ck-strip ${stripOpen ? 'open' : ''}`}>
@@ -204,7 +205,7 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
 
       {/* STEP 1: ADDRESS */}
       <div className={`ck-tl ${timelineState(1)}`}>
-        <div className="ck-dot">{step > 1 ? '✓' : 1}</div>
+        <div className="ck-dot">{step > 1 ? <Icon name="check" /> : 1}</div>
         <div className="ck-th">
           <div>
             <b>Delivery address</b>
@@ -222,7 +223,7 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
             <div className="ck-addrs">
               {saved.map(a => (
                 <button key={a.id} className={`ck-addr ${addrId === a.id ? 'on' : ''}`} onClick={() => setAddrId(a.id)}>
-                  <span className="ck-addr-ic">{a.label === 'Work' ? '🏢' : a.label === 'Home' ? '🏠' : '📍'}</span>
+                  <span className="ck-addr-ic">{a.label === 'Work' ? <Icon name="building" /> : a.label === 'Home' ? <Icon name="house" /> : <Icon name="map-pin" />}</span>
                   <div><b>{a.label}</b><span>{a.text}</span></div>
                 </button>
               ))}
@@ -266,7 +267,7 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
 
       {/* STEP 2: TIME & TIP */}
       <div className={`ck-tl ${timelineState(2)}`}>
-        <div className="ck-dot">{step > 2 ? '✓' : 2}</div>
+        <div className="ck-dot">{step > 2 ? <Icon name="check" /> : 2}</div>
         <div className="ck-th">
           <div>
             <b>Delivery time</b>
@@ -323,7 +324,7 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
                   return (
                     <div key={m.id}>
                       <button className={`ck-method ${on ? 'on' : ''}`} onClick={() => { setMethodId(m.id); setError('') }}>
-                        <span className={`ck-logo ${m.icon ? 'em' : ''}`} style={m.color ? { background: m.color } : undefined}>{m.icon || m.logo}</span>
+                        <span className={`ck-logo ${m.icon ? 'em' : ''}`} style={m.color ? { background: m.color } : undefined}>{m.icon ? <Icon name={m.icon} /> : m.logo}</span>
                         <div className="ck-method-name">
                           <b>{m.name}</b>
                           <span>{m.sub}</span>
@@ -428,7 +429,7 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
               />
             </div>
             <p className="ck-slide-hint">Drag the handle all the way to the right. Keyboard: focus the slider and press Enter.</p>
-            <div className="ck-trust"><span>🔒 Encrypted</span><span>↩ Easy refunds</span><span>✓ Fresh or free</span></div>
+            <div className="ck-trust"><span><Icon name="lock" /> Encrypted</span><span><Icon name="undo" /> Easy refunds</span><span><Icon name="check" /> Fresh or free</span></div>
             <div className="ck-acts"><button className="ck-btn ghost" onClick={() => setStep(2)}>Back</button><span /></div>
           </div>
         )}

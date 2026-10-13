@@ -1,14 +1,15 @@
 import { useState, useMemo } from 'react'
 import ProductCard from './ProductCard'
 import { PRODUCTS } from '../data/products.js'
+import Icon from './Icon.jsx'
 
 
 const FILTERS  = ['All', 'Organic', 'On Sale', 'Popular', 'New Arrival']
 const CAT_LABELS = {
-  all:'🛒 All Products', fruits:'🍎 Fruits & Vegetables', meat:'🐟 Meat & Fish',
-  dairy:'🥛 Dairy', breakfast:'🥞 Breakfast', beverage:'🍵 Beverage',
-  snacks:'🍿 Snacks', home:'🧹 Home & Cleaning', health:'💊 Health & Beauty',
-  petcare:'🐾 Pet Care', cooking:'🧂 Cooking',
+  all:'All Products', fruits:'Fruits & Vegetables', meat:'Meat & Fish',
+  dairy:'Dairy', breakfast:'Breakfast', beverage:'Beverage',
+  snacks:'Snacks', home:'Home & Cleaning', health:'Health & Beauty',
+  petcare:'Pet Care', cooking:'Cooking',
 }
 
 function ProductList({ activeCat, cart, addToCart, increment, decrement, searchQuery }) {  
@@ -34,7 +35,7 @@ function ProductList({ activeCat, cart, addToCart, increment, decrement, searchQ
         {/* Section header */}
       <div className="section-header">
         <h2 className="section-title">
-          {CAT_LABELS[activeCat] || '🛒 All Products'}
+          <Icon id={activeCat} /> {CAT_LABELS[activeCat] || 'All Products'}
           <span className="product-count">{filtered.length} items</span>
         </h2>
         
@@ -56,7 +57,7 @@ function ProductList({ activeCat, cart, addToCart, increment, decrement, searchQ
         {/* Grid */}
       {filtered.length === 0 ? (
         <div className="grid-empty">
-          <span className="grid-empty-icon">🔍</span>
+          <span className="grid-empty-icon"><Icon name="search" /></span>
           <p style={{ fontWeight: 700, fontSize: 16 }}>No products found</p>
           <p style={{ fontSize: 13, marginTop: 6 }}>Try a different category or filter.</p>
         </div>
