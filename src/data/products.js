@@ -59,6 +59,8 @@ import fish from '../assets/fish.jpg'
 import chicken from '../assets/chicken.jpg'
 import mutton from '../assets/mutton.jpg'
 import liver   from '../assets/liver.jpg'
+import { NEW_PRODUCTS } from './newProducts.js'
+
 export const PRODUCTS = [
 
   // ── FRUITS & VEGETABLES ──────────────────
@@ -132,6 +134,8 @@ export const PRODUCTS = [
   { id:52, name:'Detergent Powder', unit:'1 kg',   price:110, oldPrice:130,  discount:15,   cat:'home', tag:'sale',    img:wash},
   { id:53, name:'Dishwash Liquid',  unit:'500 ml', price:95,  oldPrice:null, discount:null, cat:'home', tag:'popular', img:liquid },
   { id:54, name:'Floor Cleaner',    unit:'1 L',    price:140, oldPrice:165,  discount:15,   cat:'home', tag:'new',     img:floorcleaner },
+
+  ...NEW_PRODUCTS,
 ]
 
 export const getProduct = (id) => PRODUCTS.find(p => p.id === Number(id))
