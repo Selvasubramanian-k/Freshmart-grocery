@@ -13,6 +13,13 @@ const COUPON_OFF  = 20
 const COUPON_MIN  = 100
 
 // type: 'pct' (percent off, capped) | 'flat' (rupees off) | 'cashback' (comes later, price same)
+// Payment logos: src/assets/pay/<id>.png|svg|webp (gpay, phonepe, paytm, bhim) irundha adha kaattum, illaina letter fallback.
+const PAY_LOGOS = import.meta.glob('../assets/pay/*.{png,svg,webp,jpg,jpeg}', { eager: true, import: 'default' })
+const payLogo = (id) => {
+  const k = Object.keys(PAY_LOGOS).find(p => /\/([^/]+)\.[a-z]+$/i.exec(p)?.[1].toLowerCase() === id)
+  return k ? PAY_LOGOS[k] : null
+}
+
 const PAY_METHODS = [
   { group:'UPI',   id:'gpay',    logo:'G',  color:'#4285F4', name:'GPay',    sub:'Pay with GPay UPI',          offer:{ type:'pct',      value:10, cap:30, label:'10% off, up to ₹30' }, best:true },
   { group:'UPI',   id:'phonepe', logo:'P',  color:'#7a3fc4', name:'PhonePe', sub:'Pay with any bank account',  offer:{ type:'cashback', value:15,         label:'₹15 cashback later' } },
@@ -131,11 +138,24 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
     return ''
   }
 
+  // handle vittaa smooth ah thirumba left ku slide aagum (jump aagaadhu)
+  const snapRef = useRef(0)
+  const snapBack = (from) => {
+    cancelAnimationFrame(snapRef.current)
+    const t0 = performance.now(), dur = 320
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / dur)
+      setSlide(Math.round(from * (1 - (1 - Math.pow(1 - k, 3)))))
+      if (k < 1) snapRef.current = requestAnimationFrame(step)
+    }
+    snapRef.current = requestAnimationFrame(step)
+  }
+
   const finishSlide = (value = slide) => {
     if (placedRef.current) return
-    if (value < 95) { setSlide(0); return }
+    if (value < 95) { snapBack(value); return }
     const msg = validatePayment()
-    if (msg) { setError(msg); setSlide(0); return }
+    if (msg) { setError(msg); snapBack(100); return }
     setError('')
     placedRef.current = true
     onPlaceOrder(entries)
@@ -324,7 +344,9 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
                   return (
                     <div key={m.id}>
                       <button className={`ck-method ${on ? 'on' : ''}`} onClick={() => { setMethodId(m.id); setError('') }}>
-                        <span className={`ck-logo ${m.icon ? 'em' : ''}`} style={m.color ? { background: m.color } : undefined}>{m.icon ? <Icon name={m.icon} /> : m.logo}</span>
+                        {payLogo(m.id)
+                          ? <span className="ck-logo img"><img src={payLogo(m.id)} alt={m.name} /></span>
+                          : <span className={`ck-logo ${m.icon ? 'em' : ''}`} style={m.color ? { background: m.color } : undefined}>{m.icon ? <Icon name={m.icon} /> : m.logo}</span>}
                         <div className="ck-method-name">
                           <b>{m.name}</b>
                           <span>{m.sub}</span>
@@ -418,8 +440,8 @@ function CheckoutPage({ cart, user, onBack, onPlaceOrder, increment, decrement }
 
             {error && <p className="ck-error" role="alert">{error}</p>}
 
-            <div className="ck-slide">
-              <div className="ck-slide-lbl">{isCOD ? `Slide to place order · ${rs(total)}` : `Slide to pay ${rs(total)}`}  ›››</div>
+            <div className={`ck-slide ${slide > 0 ? 'drag' : ''} ${slide >= 95 ? 'done' : ''}`} style={{ '--p': slide }}>
+              <div className="ck-slide-lbl">{isCOD ? `Slide to place order · ${rs(total)}` : `Slide to pay ${rs(total)}`} <span className="ck-chev" aria-hidden="true">›››</span></div>
               <input
                 type="range" min="0" max="100" value={slide}
                 aria-label={isCOD ? 'Slide to place order' : 'Slide to pay'}

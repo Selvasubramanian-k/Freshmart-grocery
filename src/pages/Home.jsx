@@ -58,7 +58,7 @@ export default function Home({ activeCat, onCategory, searchQuery, orders = [], 
 
   return (
     <>
-      <Banner />
+      <Banner onCategory={onCategory} />
 
       {showReco && (
         <>

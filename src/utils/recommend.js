@@ -8,7 +8,7 @@
 //  Rules ellam product ID lists. Maatha venumna inga ids mathunga.
 //  (IDs -> src/data/products.js)
 // ─────────────────────────────────────────────────────────────
-import { getProduct } from '../data/products.js'
+import { getProduct, PRODUCTS } from '../data/products.js'
 
 // ── 1. TIME ──────────────────────────────────────────────────
 export function getTimeSlot(date = new Date()) {
@@ -113,6 +113,42 @@ const ASSOCIATIONS = {
   54: [52, 53],
 }
 
+// ── AUTO SUGGESTIONS (ellaa products ku) ─────────────────────
+//  ASSOCIATIONS la illaadha product (pudhu products ellam) ku:
+//  1) same category popular items  2) complementary categories
+const COMPLEMENT = {
+  fruits:    ['cooking', 'dairy', 'meat'],
+  meat:      ['fruits', 'cooking', 'beverage'],
+  snacks:    ['beverage', 'dairy', 'breakfast'],
+  dairy:     ['breakfast', 'beverage', 'fruits'],
+  beverage:  ['snacks', 'breakfast', 'dairy'],
+  breakfast: ['dairy', 'beverage', 'fruits'],
+  cooking:   ['fruits', 'meat', 'dairy'],
+  home:      ['petcare', 'cooking'],
+  petcare:   ['home', 'dairy'],
+}
+const TAG_RANK = { popular: 0, sale: 1, new: 2, organic: 3 }
+const byRank = (a, b) => (TAG_RANK[a.tag] ?? 4) - (TAG_RANK[b.tag] ?? 4) || a.id - b.id
+
+const autoCache = new Map()
+export function relatedIds(id) {
+  const manual = ASSOCIATIONS[id]
+  if (manual) return manual
+  if (autoCache.has(id)) return autoCache.get(id)
+  const p = getProduct(id)
+  let out = []
+  if (p) {
+    // same category: id ku nerukkamaana neighbours + popular, so every product ku different list
+    const same = PRODUCTS.filter(x => x.cat === p.cat && x.id !== p.id)
+    const near = same.slice().sort((a, b) => Math.abs(a.id - p.id) - Math.abs(b.id - p.id)).slice(0, 2)
+    const pop  = same.filter(x => !near.includes(x)).sort(byRank).slice(0, 2)
+    const other = (COMPLEMENT[p.cat] || []).flatMap(c => PRODUCTS.filter(x => x.cat === c).sort(byRank).slice(0, 1))
+    out = [...near, ...other, ...pop].map(x => x.id)
+  }
+  autoCache.set(id, out)
+  return out
+}
+
 // ── helpers ──────────────────────────────────────────────────
 const inCart = (cart) => (id) => (cart?.[id] || 0) > 0
 
@@ -177,7 +213,7 @@ export function getCartRelated(cart = {}, limit = 6) {
   const cartIds = Object.keys(cart).filter(id => cart[id] > 0).map(Number)
 
   cartIds.forEach((cid) => {
-    const list = ASSOCIATIONS[cid] || []
+    const list = relatedIds(cid)
     const base = getProduct(cid)?.name
     list.forEach((id, i) => {
       if (inCart(cart)(id)) return
@@ -198,7 +234,7 @@ export function getHistoryRelated(orders = [], cart = {}, limit = 6) {
     for (const [rawId] of order.items || []) {
       const oid  = Number(rawId)
       const base = getProduct(oid)?.name
-      const list = ASSOCIATIONS[oid] || []
+      const list = relatedIds(oid)
       list.forEach((id, i) => {
         if (inCart(cart)(id)) return
         addScore(scored, id, ((list.length - i) + 1) * recency, `Because you ordered ${base}`)

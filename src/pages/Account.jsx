@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { getProduct, DELIVERY } from '../data/products.js'
 import ProductImage from '../components/ProductImage.jsx'
 import Icon from '../components/Icon.jsx'
+import Avatar from '../components/Avatar.jsx'
 
 // ── Saved addresses -> localStorage (backend illa) ──
 const addrKey   = (u) => `freshmart_addresses:${(u?.email || u?.phone || 'guest').toLowerCase()}`
@@ -38,7 +39,6 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
   const [addrs, setAddrs] = useState(() => readAddrs(user))
   const [addrForm, setAddrForm] = useState({ label: 'Home', text: '' })
 
-  const initial = (user?.name || 'G').trim()[0]?.toUpperCase()
   const sub = user?.phone || user?.email || ''
 
   const pick = (id) => { setTab(id); setShowList(false) }
@@ -69,7 +69,7 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
         {/* ───── LEFT ───── */}
         <aside className={`acc-left ${showList ? '' : 'acc-hide-m'}`}>
           <div className="acc-user">
-            <div className="acc-avatar">{initial}</div>
+            <Avatar user={user} size={56} />
             <div>
               <h2 className="acc-name">{user?.name || 'Guest'}</h2>
               <p className="acc-sub">{sub}</p>

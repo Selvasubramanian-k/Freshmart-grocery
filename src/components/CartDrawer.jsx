@@ -93,16 +93,22 @@ function CartDrawer({ isOpen, onClose, onOpen, cart, addToCart, increment, decre
 
       </aside>
 
-      {totalQty > 0 && !isOpen && !isCheckout && (             
-    <button className="cart-float" onClick={onOpen}>
-      <span className="cf-icon"><Icon name="shopping-bag" /></span>
-      <div>
-        <div className="cf-label">{totalQty} item{totalQty > 1 ? 's' : ''}</div>
-        <div className="cf-total">₹{subtotal}</div>
-      </div>
-      <span className="cf-arrow">›</span>
-    </button>
-  )}
+      {totalQty > 0 && !isOpen && !isCheckout && (
+        <button className="cart-float" onClick={onOpen} aria-label={`View cart, ${totalQty} items, ₹${subtotal}`}>
+          <span className="cf-thumbs">
+            {entries.slice(0, 3).map(([id]) => (
+              <span className="cf-thumb" key={id}><ProductImage product={getP(id)} /></span>
+            ))}
+            {entries.length > 3 && <span className="cf-thumb cf-more">+{entries.length - 3}</span>}
+          </span>
+          <span className="cf-text">
+            <span className="cf-label">View cart</span>
+            <span className="cf-count">{totalQty} item{totalQty > 1 ? 's' : ''}</span>
+          </span>
+          <span className="cf-total">₹{subtotal}</span>
+          <span className="cf-arrow"><Icon name="chevron-right" /></span>
+        </button>
+      )}
     </>
   )
 }

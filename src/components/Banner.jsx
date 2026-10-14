@@ -3,13 +3,14 @@ import cool from '../assets/soft-drinks.jpg'
 import fruits from '../assets/fruits.jpg'
 import { useState, useEffect } from 'react'
 
+// cat -> button click panna Home la entha category open aagum (categories.js la irukkura id)
 const BANNERS = [
-  { id:1, title:'Fresh Fruits',    sub:'Up to 30% off',          img:fruits },
-  { id:2, title:'Dairy & Eggs',    sub:'Free delivery over ₹200', img:Egg },
-  { id:3, title:'Snacks & Drinks', sub:'New arrivals weekly',     img:cool },
+  { id:1, tag:'FRESH TODAY', title:'Fresh Fruits & Veggies', sub:'Farm-fresh picks, up to 30% off',           cta:'Shop Fruits',  cat:'fruits',   img:fruits },
+  { id:2, tag:'FREE DELIVERY', title:'Dairy & Eggs',         sub:'Milk, curd, eggs & more. Free delivery over ₹200', cta:'Shop Dairy',   cat:'dairy',    img:Egg },
+  { id:3, tag:'NEW ARRIVALS', title:'Snacks & Drinks',       sub:'Chips, cold drinks & munchies, new every week',   cta:'Shop Snacks',  cat:'snacks',   img:cool },
 ]
 
-function Banner() {
+function Banner({ onCategory }) {
   const [cur, setCur] = useState(0)
 
   useEffect(() => {
@@ -17,18 +18,28 @@ function Banner() {
     return () => clearInterval(t)
   }, [])
 
+  const go = (cat) => {
+    if (onCategory) onCategory(cat)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const Content = ({ b }) => (
+    <div className="banner-content">
+      <span className="banner-tag">{b.tag}</span>
+      <h3>{b.title}</h3>
+      <p>{b.sub}</p>
+      <button type="button" className="banner-btn" onClick={(e) => { e.stopPropagation(); go(b.cat) }}>{b.cta} →</button>
+    </div>
+  )
+
   return (
     <>
       {/* Desktop */}
       <div className="banner-desktop">
         {BANNERS.map(b => (
-          <div key={b.id} className="banner-card" style={{ backgroundImage:`url(${b.img})` }}>
+          <div key={b.id} className="banner-card" style={{ backgroundImage:`url(${b.img})` }} onClick={() => go(b.cat)}>
             <div className="banner-overlay" />
-            <div className="banner-content">
-              <h3>{b.title}</h3>
-              <p>{b.sub}</p>
-              <button className="banner-btn">Shop Now →</button>
-            </div>
+            <Content b={b} />
           </div>
         ))}
       </div>
@@ -37,12 +48,9 @@ function Banner() {
       <div className="banner-carousel">
         <div className="carousel-track" style={{ transform:`translateX(-${cur * 100}%)` }}>
           {BANNERS.map(b => (
-            <div key={b.id} className="banner-card carousel-slide" style={{ backgroundImage:`url(${b.img})` }}>
+            <div key={b.id} className="banner-card carousel-slide" style={{ backgroundImage:`url(${b.img})` }} onClick={() => go(b.cat)}>
               <div className="banner-overlay" />
-              <div className="banner-content">
-                <h3>{b.title}</h3>
-                <p>{b.sub}</p>
-              </div>
+              <Content b={b} />
             </div>
           ))}
         </div>

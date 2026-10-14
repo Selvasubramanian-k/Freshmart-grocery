@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { CATEGORIES } from '../data/categories.js'
 import Icon from './Icon.jsx'
+import Avatar from './Avatar.jsx'
 
 // ─────────────────────────────────────────────────────────────
 //  Maathanum na inga mattum maathunga
 // ─────────────────────────────────────────────────────────────
-const DELIVERY_ETA = '10 minutes'
+const DELIVERY_ETA = '10 minutes'   // caption: "Delivery in 10 minutes"
 const SEARCH_HINTS = ['milk', 'tea powder', 'tomato', 'dish wash liquid', 'ice cream', 'bread', 'eggs', 'sugar']
 
 const ADDRESS_KEY    = 'freshmart_address'
@@ -68,12 +69,6 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
     setAddrOpen(false)
   }
 
-  // Get initials from name
-  const getInitials = (name) => {
-    if (!name) return <Icon name="user" />
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-  }
-
   return (
     <>
       <header className="zn-header">
@@ -93,7 +88,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
               aria-expanded={addrOpen}
               onClick={openAddress}
             >
-              <span className="zn-eta"><Icon name="zap" /> {DELIVERY_ETA}</span>
+              <span className="zn-eta"><Icon name="zap" /> <span className="zn-eta-pre">Delivery in</span> {DELIVERY_ETA}</span>
               <span className="zn-addr">
                 <span className="zn-addr-text">{address.label} · {address.text || 'Add address'}</span>
                 <span className="zn-caret" aria-hidden="true">▾</span>
@@ -164,7 +159,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
           <div className="zn-actions">
             <button type="button" className="zn-account" aria-label="My account" onClick={() => navigate('/account')}>
-              {getInitials(user?.name)}
+              <Avatar user={user} size={36} />
             </button>
             <button type="button" className="zn-cart" aria-label={`Cart, ${cartCount} items`} onClick={onCartClick}>
               <Icon name="shopping-cart" />
@@ -208,7 +203,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
         {/* Account in drawer */}
         <div className="right-drawer-account" onClick={() => goTo('/account')} style={{ cursor: 'pointer' }}>
-          <div className="account-circle-sm">{getInitials(user?.name)}</div>
+          <Avatar user={user} size={40} />
           <div>
             <p className="right-account-name">{user?.name || 'Guest User'}</p>
             <p className="right-account-email">{user?.email || user?.phone || 'guest@freshmart.com'}</p>
