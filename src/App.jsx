@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Navbar      from './components/Navbar.jsx'
 import CartDrawer  from './components/CartDrawer.jsx'
@@ -23,10 +23,6 @@ export default function App() {
   const location    = useLocation()
   const navigate    = useNavigate()
   const isLoginPage = location.pathname === '/login'
-
-  useEffect(() => {
-    navigate('/login')
-  }, [])
 
   const addToCart  = (p)  => setCart(c => ({ ...c, [p.id]: (c[p.id] || 0) + 1 }))
   const increment  = (id) => setCart(c => ({ ...c, [id]: (c[id] || 0) + 1 }))
@@ -58,6 +54,9 @@ export default function App() {
     setOrders(loadOrders(userData.email || userData.phone))
     navigate('/')
   }
+
+  // Login aagaama entha page ku vandhaalum first render la ye Login ku poidum (Home flash aagaadhu)
+  if (!user && !isLoginPage) return <Navigate to="/login" replace />
 
   return (
     <div className="app">
