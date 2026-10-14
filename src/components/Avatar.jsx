@@ -72,14 +72,14 @@ export default function Avatar({ user, size = 40, className = '', kind: forced }
 }
 
 // Male / Female select panra chinna control
-export function AvatarPicker({ user, compact = false }) {
+export function AvatarPicker({ user, compact = false, onPick }) {
   const [kind, setKind] = useState(() => readAvatarKind(user))
   useEffect(() => {
     const sync = () => setKind(readAvatarKind(user))
     window.addEventListener(EVENT, sync)
     return () => window.removeEventListener(EVENT, sync)
   }, [user])
-  const pick = (k) => { setKind(k); saveAvatarKind(user, k) }
+  const pick = (k) => { setKind(k); saveAvatarKind(user, k); onPick?.(k) }
   return (
     <div className={`av-picker ${compact ? 'compact' : ''}`} role="group" aria-label="Choose avatar">
       {['male', 'female'].map((k) => (

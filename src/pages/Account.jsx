@@ -75,7 +75,7 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
               <p className="acc-sub">{sub}</p>
             </div>
           </div>
-          <AvatarPicker user={user} />
+          <AvatarPicker user={user} onPick={() => setTimeout(() => (window.history.length > 1 ? navigate(-1) : navigate('/')), 450)} />
 
           <button className="acc-wallet" onClick={() => navigate('/offers')}>
             <div className="acc-wallet-top">
