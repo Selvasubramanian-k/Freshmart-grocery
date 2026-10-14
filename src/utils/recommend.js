@@ -130,6 +130,25 @@ const COMPLEMENT = {
 const TAG_RANK = { popular: 0, sale: 1, new: 2, organic: 3 }
 const byRank = (a, b) => (TAG_RANK[a.tag] ?? 4) - (TAG_RANK[b.tag] ?? 4) || a.id - b.id
 
+// Name based pairs: product name la intha word irundha -> intha words ulla products mudhalla varum
+const NAME_PAIRS = [
+  [/jam|spread|honey|peanut butter/i,        [/bread/i, /butter(?!milk)/i, /rusk/i, /milk/i]],
+  [/bread|bun|rusk/i,                         [/jam/i, /butter(?!milk)/i, /egg/i, /milk/i]],
+  [/poha|upma|rava|oats|muesli|cornflake/i,   [/milk/i, /banana/i, /honey/i, /tea|coffee/i]],
+  [/tea|coffee/i,                             [/milk/i, /sugar/i, /biscuit|rusk|cookie/i]],
+  [/biscuit|cookie|cracker/i,                 [/tea|coffee/i, /milk/i]],
+  [/chips|wafer|puffs|chikki|murukku|popcorn|mixture/i, [/cola|soda|drink|juice/i, /chocolate/i]],
+  [/cola|soda|juice|drink/i,                  [/chips|wafer|puffs|popcorn/i, /biscuit|cookie/i]],
+  [/rice|dal|atta|flour|rava/i,               [/oil/i, /salt/i, /masala|powder|seeds/i, /onion/i]],
+  [/masala|powder|seeds|tamarind/i,           [/oil/i, /onion/i, /tomato/i, /rice|dal/i]],
+  [/chicken|mutton|fish|prawn|crab|squid|sardine/i, [/onion/i, /tomato/i, /lemon/i, /masala|chilli|turmeric/i, /oil/i]],
+  [/milk|curd|lassi|yogurt|yoghurt/i,         [/sugar/i, /tea|coffee/i, /bread/i, /cereal|oats|muesli/i]],
+  [/cheese|paneer/i,                          [/bread/i, /tomato/i, /capsicum/i]],
+  [/chocolate|ice ?cream/i,                   [/milk/i, /biscuit|cookie/i]],
+  [/cleaner|detergent|wash|phenyl|scrub|tissue|garbage/i, [/cleaner|detergent|wash|phenyl|scrub|tissue|garbage/i]],
+  [/dog|cat|pet|bird|fish food|leash|bone/i,  [/dog|cat|pet|bird|leash|bone|litter/i]],
+]
+
 const autoCache = new Map()
 export function relatedIds(id) {
   const manual = ASSOCIATIONS[id]
@@ -143,7 +162,18 @@ export function relatedIds(id) {
     const near = same.slice().sort((a, b) => Math.abs(a.id - p.id) - Math.abs(b.id - p.id)).slice(0, 2)
     const pop  = same.filter(x => !near.includes(x)).sort(byRank).slice(0, 2)
     const other = (COMPLEMENT[p.cat] || []).flatMap(c => PRODUCTS.filter(x => x.cat === c).sort(byRank).slice(0, 1))
-    out = [...near, ...other, ...pop].map(x => x.id)
+    // name based pairs (jam -> bread, butter ...)
+    const paired = []
+    for (const [re, wants] of NAME_PAIRS) {
+      if (!re.test(p.name)) continue
+      for (const w of wants) {
+        const hit = PRODUCTS.find(x => x.id !== p.id && w.test(x.name) && !paired.includes(x))
+        if (hit) paired.push(hit)
+      }
+      break
+    }
+    const seen = new Set()
+    out = [...paired, ...near, ...other, ...pop].filter(x => !seen.has(x.id) && seen.add(x.id)).map(x => x.id)
   }
   autoCache.set(id, out)
   return out
@@ -275,11 +305,17 @@ export function getPersonalRecommendations({ cart = {}, orders = [], limit = 8 }
     }
   }
 
-  const buyAgain = getBuyAgain(orders, cart, limit)
-  const reserve  = Math.min(2, buyAgain.length)   // buy-again ku min 2 idam
+  // Cart la item irundha -> cart ku related items MATTUM (jam ku petcare varaadhu)
+  const hasCart = Object.values(cart).some(q => q > 0)
+  if (hasCart) {
+    push(getCartRelated(cart, limit), limit)
+    return out
+  }
 
-  push(getCartRelated(cart, limit), limit - reserve)             // 1. cart la ippo irukkuradhu
-  push(getHistoryRelated(orders, cart, limit), limit - reserve)  // 2. previous orders related
-  push(buyAgain, limit)                                          // 3. buy again
+  // Cart empty -> previous orders based
+  const buyAgain = getBuyAgain(orders, cart, limit)
+  const reserve  = Math.min(2, buyAgain.length)
+  push(getHistoryRelated(orders, cart, limit), limit - reserve)
+  push(buyAgain, limit)
   return out
 }

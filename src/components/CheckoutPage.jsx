@@ -15,8 +15,14 @@ const COUPON_MIN  = 100
 // type: 'pct' (percent off, capped) | 'flat' (rupees off) | 'cashback' (comes later, price same)
 // Payment logos: src/assets/pay/<id>.png|svg|webp (gpay, phonepe, paytm, bhim) irundha adha kaattum, illaina letter fallback.
 const PAY_LOGOS = import.meta.glob('../assets/pay/*.{png,svg,webp,jpg,jpeg}', { eager: true, import: 'default' })
+const LOGO_WORDS = { gpay: ['gpay', 'googlepay', 'google-pay', 'google_pay'], phonepe: ['phonepe', 'phone-pe', 'phone_pe'], paytm: ['paytm'], bhim: ['bhim'] }
 const payLogo = (id) => {
-  const k = Object.keys(PAY_LOGOS).find(p => /\/([^/]+)\.[a-z]+$/i.exec(p)?.[1].toLowerCase() === id)
+  const words = LOGO_WORDS[id]
+  if (!words) return null
+  const k = Object.keys(PAY_LOGOS).find(p => {
+    const f = p.split('/').pop().toLowerCase()
+    return words.some(w => f.includes(w))
+  })
   return k ? PAY_LOGOS[k] : null
 }
 

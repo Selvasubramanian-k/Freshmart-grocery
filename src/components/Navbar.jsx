@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { CATEGORIES } from '../data/categories.js'
 import Icon from './Icon.jsx'
-import Avatar from './Avatar.jsx'
+import Avatar, { AvatarPicker } from './Avatar.jsx'
 
 // ─────────────────────────────────────────────────────────────
 //  Maathanum na inga mattum maathunga
@@ -33,9 +33,31 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
   const [address, setAddress]     = useState(readAddress)
   const [draft, setDraft]         = useState(address)
 
+  const [compact, setCompact] = useState(false)
+  const stripRef = useRef(null)
+
   const navigate = useNavigate()
   const location = useLocation()
   const isHome   = location.pathname === '/'
+
+  // Mobile: keela scroll panna search row maraiyum, mela scroll panna thirumba varum (header chinnadhu aagum)
+  useEffect(() => {
+    let last = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      if (Math.abs(y - last) < 8) return
+      setCompact(y > 90 && y > last)
+      last = y
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // select panna category strip la theriyura madhiri scroll aagum
+  useEffect(() => {
+    const el = stripRef.current?.querySelector('.zn-cat.active')
+    el?.scrollIntoView?.({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }, [activeCat])
 
   // Search box la text thaanaave maaruthu (Zepto maathiri)
   useEffect(() => {
@@ -71,7 +93,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
   return (
     <>
-      <header className="zn-header">
+      <header className={`zn-header ${compact ? 'is-compact' : ''}`}>
         <div className="zn-top">
 
           <button type="button" className="zn-logo" aria-label="FreshMart home" onClick={() => navigate('/')}>
@@ -171,7 +193,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
         {/* Category icon strip (Home page la mattum) */}
         {isHome && (
-          <nav className="zn-strip" aria-label="Categories">
+          <nav className="zn-strip" aria-label="Categories" ref={stripRef}>
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
@@ -209,6 +231,8 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
             <p className="right-account-email">{user?.email || user?.phone || 'guest@freshmart.com'}</p>
           </div>
         </div>
+
+        <div className="right-drawer-avatar"><p>Profile picture</p><AvatarPicker user={user} compact /></div>
 
         <div className="right-drawer-btns">
           <button className="btn-seller" onClick={() => goTo('/seller')}>Become a Seller</button>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { getProduct, DELIVERY } from '../data/products.js'
 import ProductImage from '../components/ProductImage.jsx'
 import Icon from '../components/Icon.jsx'
-import Avatar from '../components/Avatar.jsx'
+import Avatar, { AvatarPicker } from '../components/Avatar.jsx'
 
 // ── Saved addresses -> localStorage (backend illa) ──
 const addrKey   = (u) => `freshmart_addresses:${(u?.email || u?.phone || 'guest').toLowerCase()}`
@@ -75,6 +75,7 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
               <p className="acc-sub">{sub}</p>
             </div>
           </div>
+          <AvatarPicker user={user} />
 
           <button className="acc-wallet" onClick={() => navigate('/offers')}>
             <div className="acc-wallet-top">
