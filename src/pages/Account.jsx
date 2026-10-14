@@ -61,10 +61,14 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
   }
 
   const history = [...orders].reverse()
+  const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate('/'))
 
   return (
     <div className="acc-page">
       <div className="acc-shell">
+        <button type="button" className="acc-exit" aria-label="Go back" onClick={goBack}>
+          <span aria-hidden="true">←</span> Back
+        </button>
 
         {/* ───── LEFT ───── */}
         <aside className={`acc-left ${showList ? '' : 'acc-hide-m'}`}>
@@ -75,7 +79,7 @@ export default function Account({ user, orders, increment, onLogout, onOpenCart 
               <p className="acc-sub">{sub}</p>
             </div>
           </div>
-          <AvatarPicker user={user} onPick={() => setTimeout(() => (window.history.length > 1 ? navigate(-1) : navigate('/')), 450)} />
+          <AvatarPicker user={user} onPick={() => setTimeout(goBack, 450)} />
 
           <button className="acc-wallet" onClick={() => navigate('/offers')}>
             <div className="acc-wallet-top">

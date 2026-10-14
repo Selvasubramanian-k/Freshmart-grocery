@@ -1495,8 +1495,17 @@ body {
 .acc-shell {
   max-width: 1150px; margin: 0 auto; background: var(--white);
   border: 1px solid var(--border); border-radius: 20px;
-  display: grid; grid-template-columns: 380px 1fr; overflow: hidden; min-height: 520px;
+  display: grid; grid-template-columns: 380px 1fr; overflow: hidden; min-height: 520px; position: relative;
 }
+.acc-exit {
+  position: absolute; top: 10px; right: 14px; z-index: 5;
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+  border: 1.5px solid var(--border); border-radius: 999px; background: var(--white);
+  font: inherit; font-size: 13px; font-weight: 700; color: var(--text); cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.acc-exit:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
+.acc-exit:active { transform: scale(.96); }
 .acc-left { padding: 24px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 18px; }
 .acc-user { display: flex; align-items: center; gap: 14px; }
 .acc-avatar {
