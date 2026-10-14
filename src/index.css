@@ -2312,7 +2312,8 @@ svg.lucide { flex: none; vertical-align: -0.15em; }
 @keyframes znTap { 0% { transform: scale(1); } 50% { transform: scale(.86); } 100% { transform: scale(1); } }
 
 @media (max-width: 767px) {
-  .zn-header { transition: box-shadow .2s; }
+  .zn-header { transition: transform .25s ease; will-change: transform; }
+  .zn-header.is-compact { transform: translate3d(0, calc(-1 * var(--hide-y, 0px)), 0); }
   .zn-top { gap: 6px 8px; padding: 6px 12px 8px; min-height: 0; }
   .zn-logo svg { width: 32px; height: 32px; }
   .zn-eta { font-size: 14px; }
@@ -2322,8 +2323,7 @@ svg.lucide { flex: none; vertical-align: -0.15em; }
   .zn-actions { gap: 0; }
 
   /* search row: scroll down -> collapses, scroll up -> back */
-  .zn-search { height: 40px; max-height: 40px; overflow: hidden; transition: max-height .25s ease, opacity .2s ease, margin .25s ease, padding .25s ease, border-width .25s; }
-  .is-compact .zn-search { max-height: 0; opacity: 0; margin-top: -6px; padding-top: 0; padding-bottom: 0; border-width: 0; }
+  .zn-search { height: 40px; }
 
   /* smaller strip */
   .zn-strip { padding: 0 6px; scroll-padding: 0 12px; }
@@ -2331,10 +2331,10 @@ svg.lucide { flex: none; vertical-align: -0.15em; }
   .zn-cat-icon { width: 40px; height: 40px; font-size: 22px; border-radius: 12px; }
   .zn-cat-label { font-size: 11px; min-height: 26px; max-width: 68px; }
   .zn-cat-badge { right: calc(50% - 30px); top: 1px; font-size: 7.500px; line-height: 12px; }
-  .is-compact .zn-cat-label { display: none; }
-  .is-compact .zn-cat { padding-bottom: 4px; }
 
   /* tap animation (phone la hover illa) */
   .zn-cat:active .zn-cat-icon { animation: znTap .25s ease; }
-  .zn-cat.active .zn-cat-icon { animation: znPop .45s ease, znActive 2.2s ease-in-out .45s infinite; }
+  .zn-cat.active .zn-cat-icon { animation: znPop .45s ease; }
+  .zn-cat { animation: none; }
+  .zn-cat-badge { animation: none; }
 }

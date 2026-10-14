@@ -35,22 +35,41 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
   const [compact, setCompact] = useState(false)
   const stripRef = useRef(null)
+  const headerRef = useRef(null)
 
   const navigate = useNavigate()
   const location = useLocation()
   const isHome   = location.pathname === '/'
 
-  // Mobile: keela scroll panna search row maraiyum, mela scroll panna thirumba varum (header chinnadhu aagum)
+  // Mobile: keela scroll panna top part (logo/search) maraiyum, mela scroll panna thirumba varum.
+  // Layout maathama transform mattum use panrom -> lag illa. rAF la throttle.
   useEffect(() => {
     let last = window.scrollY
-    const onScroll = () => {
+    let ticking = false
+    const measure = () => {
+      const h = headerRef.current
+      const strip = stripRef.current
+      if (!h || !strip) return
+      h.style.setProperty('--hide-y', `${Math.max(0, h.offsetHeight - strip.offsetHeight)}px`)
+    }
+    const update = () => {
+      ticking = false
       const y = window.scrollY
       if (Math.abs(y - last) < 8) return
-      setCompact(y > 90 && y > last)
+      const next = y > 90 && y > last
+      setCompact((c) => (c === next ? c : next))
       last = y
     }
+    const onScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update) }
+    }
+    measure()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('resize', measure)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', measure)
+    }
   }, [])
 
   // select panna category strip la theriyura madhiri scroll aagum
@@ -93,7 +112,7 @@ function Navbar({ onCartClick, cartCount, onSearch, user, onLogout, activeCat, o
 
   return (
     <>
-      <header className={`zn-header ${compact ? 'is-compact' : ''}`}>
+      <header ref={headerRef} className={`zn-header ${compact ? 'is-compact' : ''}`}>
         <div className="zn-top">
 
           <button type="button" className="zn-logo" aria-label="FreshMart home" onClick={() => navigate('/')}>
